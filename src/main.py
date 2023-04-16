@@ -8,14 +8,14 @@ from src.api_v1.exception_handlers import http_exception_handler, request_error_
 from src.api_v1.routes import api_router
 
 from src.events import start_app_handler, shutdown_app_handler
-from src.config.settings import get_settings
+from src.config import get_settings
 
 settings = get_settings()
 
 def create_application() -> FastAPI:
     application = FastAPI(
         title=settings.app_name,
-        description="Welcome to Symvasi's API documentation! Here you will able to discover all of the ways you can interact with the Symvasi API.",
+        description="Eolass API",
         openapi_url="/api/{0}/openapi.json".format(settings.api_version),
     )
     application.add_middleware(
