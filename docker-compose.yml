@@ -1,0 +1,36 @@
+version: '3.8'
+
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  app:
+    build:
+      context: .
+    container_name: eolass_backend
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-9000}:80"
+    volumes:
+      - ./:/app
+    networks:
+      - backend
+
+  db:
+    image: mongo:6.0.3
+    restart: unless-stopped
+    container_name: eolass_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USERNAME:-user}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-password}"
+    ports:
+      - "${DB_PORT:-27017}:27017"
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - backend

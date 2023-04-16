@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "eolass-backend"
+version = "0.1.0"
+description = ""
+authors = ["Qhris-tian <christian.kojobarnes@gmail.com>"]
+readme = "README.md"
+packages = [{include = "eolass_backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.95.1"
+uvicorn = {extras = ["standard"], version = "^0.21.1"}
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.2.0"
+black = "^23.3.0"
+pytest = "^7.3.1"
+pytest-cov = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+]log_cli = 1
+addopts = '''
+  --strict-markers
+  --tb=short
+  --cov=src
+  --cov=tests
+  --cov-branch
+  --cov-report=term-missing
+  --cov-report=html
+  --no-cov-on-fail
+  --cov-fail-under=100
+'''
