@@ -1,4 +1,3 @@
-import logging
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
@@ -11,6 +10,7 @@ from src.events import start_app_handler, shutdown_app_handler
 from src.config import get_settings
 
 settings = get_settings()
+
 
 def create_application() -> FastAPI:
     application = FastAPI(
