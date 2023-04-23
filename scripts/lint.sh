@@ -6,4 +6,4 @@ set -x
 mypy src
 ruff check src tests scripts
 black src tests
-isort src tests scripts --check-only
+isort src tests scripts

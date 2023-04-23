@@ -3,11 +3,11 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from starlette.middleware.cors import CORSMiddleware
 
-from src.api_v1.exception_handlers import http_exception_handler, request_error_handler
+from src.api_v1.exception_handlers import (http_exception_handler,
+                                           request_error_handler)
 from src.api_v1.routes import api_router
-
-from src.events import start_app_handler, shutdown_app_handler
 from src.config import get_settings
+from src.events import shutdown_app_handler, start_app_handler
 
 settings = get_settings()
 

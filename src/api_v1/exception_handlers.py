@@ -1,8 +1,9 @@
+from typing import Dict
+
 from fastapi import HTTPException, status
 from fastapi.exceptions import RequestValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-from typing import Dict
 
 
 async def http_exception_handler(
