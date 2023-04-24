@@ -34,12 +34,14 @@ jobs:
         run: pip install poetry
       - name: Install required dependencies
         run: poetry install
-      - name: Lint with flake8
+      - name: Lint files
         run: |
           chmod u+x scripts/lint.sh
           poetry run scripts/lint.sh
       - name: Run tests
-        run: poetry run pytest
+        run: |
+          chmod u+x scripts/test.sh
+          poetry run scripts/test.sh
         env:
           PYTHONDONTWRITEBYTECODE: 1
           PYTHONUNBUFFERED: 1
