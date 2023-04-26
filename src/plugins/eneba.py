@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 import requests
+
 from src.config import get_settings
 from src.decorators import timed_lru_cache
 from src.plugins.base_client import BaseClient

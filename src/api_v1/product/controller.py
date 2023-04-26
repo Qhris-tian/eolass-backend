@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from src.plugins.eneba import EnebaClient
+
 from .utils import sanitize_response
 
 router = APIRouter()
