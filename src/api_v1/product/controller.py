@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 
 from src.plugins.eneba import EnebaClient
 
+from .schema import ProductResponse
 from .utils import sanitize_response
 
 router = APIRouter()
@@ -10,6 +11,7 @@ router = APIRouter()
 @router.get(
     "/search",
     summary="Search for eneba products.",
+    response_model=ProductResponse,
 )
 def search_product(
     product: str,
