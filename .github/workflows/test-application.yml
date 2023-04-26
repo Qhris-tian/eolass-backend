@@ -39,9 +39,6 @@ jobs:
           chmod u+x scripts/lint.sh
           poetry run scripts/lint.sh
       - name: Run tests
-        run: |
-          chmod u+x scripts/test.sh
-          poetry run scripts/test.sh
         env:
           PYTHONDONTWRITEBYTECODE: 1
           PYTHONUNBUFFERED: 1
@@ -50,3 +47,11 @@ jobs:
           DATABASE_NAME: test
           API_VERSION: v1
           DATABASE_DSN: mongodb://user:password@127.0.0.1:27017/?retryWrites=true&w=majority
+          ENEBA_BASE_URI: ${{ secrets.ENEBA_BASE_URI }}
+          ENEBA_CLIENT_ID: ${{ secrets.ENEBA_CLIENT_ID }}
+          ENEBA_GRANT_TYPE: ${{ secrets.ENEBA_GRANT_TYPE }}
+          ENEBA_ID: ${{ secrets.ENEBA_ID }}
+          ENEBA_SECRET: ${{ secrets.ENEBA_SECRET }}
+        run: |
+          chmod u+x scripts/test.sh
+          poetry run scripts/test.sh
