@@ -59,6 +59,45 @@ class EnebaClient(BaseClient):
         data = dict(remove_edges_and_nodes(response.json()["data"]))
 
         return data["S_products"]
+    
+
+    def get_auctions(self, limit):
+
+        query = {
+        "query": """query {
+            S_stock(
+                first: %s
+            ) {
+                edges{
+                    node {
+                        id
+                        product { id name }
+                        unitsSold
+                        onHold
+                        onHand
+                        declaredStock
+                        status
+                        expiresAt
+                        createdAt
+                        autoRenew
+                        price { amount currency }
+                        position
+                        priceUpdateQuota { quota nextFreeIn totalFree }
+                    }
+                }
+            }
+        }
+        """
+        % (limit)
+        }
+        response = self.post_json(
+            "graphql/",
+            query
+        )
+
+        data = dict(response.json()["data"])
+
+        return data["S_stock"]
 
 
 @timed_lru_cache(210000)

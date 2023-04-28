@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from starlette.responses import JSONResponse, RedirectResponse
 
 from src.api_v1.product.controller import router as product_router
+from src.api_v1.auction.controller import router as auction_router
 from src.config import get_settings
 
 settings = get_settings()
@@ -17,6 +18,12 @@ api_router.include_router(
     product_router,
     prefix="/products",
     tags=["products"],
+)
+
+api_router.include_router(
+    auction_router,
+    prefix="/auctions",
+    tags=["auctions"]
 )
 
 
