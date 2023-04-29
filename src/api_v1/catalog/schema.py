@@ -1,4 +1,4 @@
-from typing import List, Any, Union, Optional
+from typing import Any, List, Optional, Union
 
 from pydantic import BaseModel
 
@@ -50,7 +50,12 @@ class CatalogListResponse(BaseModel):
     results: List[Catalog]
 
 
-class CatalogAvailabilityInput(BaseModel):
+class CatalogAvailabilityRequest(BaseModel):
     product_id: int
     quantity: int
     price: float
+
+
+class CatalogAvailabilityResponse(BaseModel):
+    availability: bool
+    detail: str

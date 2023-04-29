@@ -1,7 +1,7 @@
 import logging
 from functools import lru_cache
 
-from pydantic import BaseSettings
+from pydantic import BaseSettings, validator
 
 
 class Settings(BaseSettings):
@@ -17,9 +17,18 @@ class Settings(BaseSettings):
     ENEBA_GRANT_TYPE: str = ""
     ENEBA_ID: str = ""
     ENEBA_SECRET: str = ""
+    EZPIN_BASE_URI: str = ""
+    EZPIN_VERSION: str = "v2"
+    EZPIN_ID: str = ""
+    EZPIN_SECRET: str = ""
 
     class Config:
         env_file = ".env"
+
+    @validator("EZPIN_BASE_URI")
+    @classmethod
+    def get_ezpin_base_uri(cls, value: str, values) -> str:
+        return "{}/{}".format(value, values["EZPIN_VERSION"])
 
 
 @lru_cache()
