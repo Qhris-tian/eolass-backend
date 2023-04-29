@@ -12,7 +12,7 @@ class CreateAuctionRequest(BaseModel):
     type: str
     productId: UUID
     enabled: bool
-    keys: List[str]
+    keys: Optional[List[str]]
     autoRenew: bool
     price: Price
     onHand: Optional[int] = 0
