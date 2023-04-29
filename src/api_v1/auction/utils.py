@@ -1,5 +1,5 @@
 
-from .schema import CreateAuctionRequest
+from .schema import CreateAuctionRequest, UpdateAuctionRequest
 import json
 
 def get_create_auction_plain(body: CreateAuctionRequest):
@@ -46,24 +46,6 @@ def get_create_auction_preorder(body: CreateAuctionRequest):
             %(body.productId, body.enabled, body.onHand, body.autoRenew, body.price.amount, body.price.currency)
         }
 
-    # return {
-    #     "query": """
-    #         mutation {
-    #             S_createAuction(
-    #                 input: {
-    #                 productId: "92c73bdc-80d4-1041-a4de-c12cc3d288c0"
-    #                 enabled: true
-    #                 onHand: 50
-    #                 autoRenew: false
-    #                 price: { amount: 1399, currency: "EUR" }
-    #                 }
-    #             ) {
-    #                 isSuccessful
-    #                 actionId
-    #             }
-    #             }
-    #     """
-    # }
 
 def get_create_auction_declared_stock(body: CreateAuctionRequest):
     
@@ -87,8 +69,48 @@ def get_create_auction_declared_stock(body: CreateAuctionRequest):
             %(body.productId, body.enabled, body.declaredStock, body.autoRenew, body.price.amount, body.price.currency)
         }
 
-def get_create_auction_query(data: CreateAuctionRequest):
-    match data.type:
+def get_update_auction_plain(body: UpdateAuctionRequest):
+
+    return {
+        "query": """
+        mutation {
+            S_updateAuction(
+                input: {
+                id: "%s"
+                addedKeys: %s
+                removedKeys: %s
+                price: { amount: %s, currency: "%s" }
+                }
+            ) {
+                isSuccessful
+                actionId
+            }
+            }
+        """
+        %(body.id, json.dumps(body.addedKeys), json.dumps(body.removedKeys), body.price.amount, body.price.currency)
+    }
+
+def get_update_auction_declared_stock(body: UpdateAuctionRequest):
+
+    return {
+        "query": """
+            mutation {
+            S_updateAuction(
+                input: {
+                id: "%s"
+                declaredStock: %s
+                }
+            ) {
+                isSuccessful
+                actionId
+            }
+            }
+        """
+        %(body.id, body.declaredStock)
+    }
+
+def get_create_auction_query(data: CreateAuctionRequest, type):
+    match type:
         case "plain":
             return get_create_auction_plain(data)
         case "preorder":
@@ -96,6 +118,15 @@ def get_create_auction_query(data: CreateAuctionRequest):
         case "declaredstock":
             return get_create_auction_declared_stock(data)
         case default:
+            return ""
+        
+def get_update_auction_query(data: UpdateAuctionRequest, type):
+    match type:
+        case "plain":
+            return get_update_auction_plain(data)
+        case "declaredstock":
+            return get_update_auction_declared_stock(data)
+        case defualt:
             return ""
         
 def get_enable_declared_stock_query():

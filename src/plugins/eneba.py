@@ -5,7 +5,7 @@ import requests
 from src.config import get_settings
 from src.decorators import timed_lru_cache
 from src.plugins.base_client import BaseClient
-from src.api_v1.auction.schema import CreateAuctionRequest
+from src.api_v1.auction.schema import CreateAuctionRequest, UpdateAuctionRequest
 from src.api_v1.auction import utils
 
 settings = get_settings()
@@ -102,9 +102,9 @@ class EnebaClient(BaseClient):
         return data["S_stock"]
     
 
-    def create_auction(self, body: CreateAuctionRequest):
+    def create_auction(self, body: CreateAuctionRequest, type):
 
-        query = utils.get_create_auction_query(body)
+        query = utils.get_create_auction_query(body, type)
 
         response = self.post_json(
             "graphql/",
@@ -113,6 +113,19 @@ class EnebaClient(BaseClient):
 
         data = dict(response.json())
         return data
+    
+    def update_auction(self, body: UpdateAuctionRequest, type):
+
+        query = utils.get_update_auction_query(body, type)
+
+        response = self.post_json(
+            "graphql/",
+            query
+        )
+
+        data = dict(response.json())
+        return data
+
     
     def enable_declared_stock(self):
 

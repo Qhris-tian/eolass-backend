@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from src.plugins.eneba import EnebaClient
 from uuid import UUID
 
-from .schema import CreateAuctionRequest
+from .schema import CreateAuctionRequest, UpdateAuctionRequest
 
 router = APIRouter()
 
@@ -21,15 +21,30 @@ def get_auctions(page: int = 1,
 
 @router.post("/")
 def create_auction(auctionData: CreateAuctionRequest,
+                   type: str,
                    eneba=Depends(EnebaClient)):
 
     auctionData.enabled = "true" if auctionData.enabled == True else "false"
     auctionData.autoRenew = "true" if auctionData.autoRenew == True else "false"
-    response = eneba.create_auction(auctionData)
+    response = eneba.create_auction(auctionData, type)
 
     return {
         "response": response
     }
+
+
+@router.put("/{stock_id}")
+def update_auction(stock_id: UUID,
+                   updateData: UpdateAuctionRequest,
+                   type: str,
+                   eneba=Depends(EnebaClient)):
+    
+    response = eneba.update_auction(updateData, type)
+
+    return {
+        "response": response
+    }
+
 
 @router.post("/enable-declared-stock")
 def enable_declared_stock(eneba=Depends(EnebaClient)):

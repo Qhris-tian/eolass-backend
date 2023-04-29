@@ -9,12 +9,22 @@ class Price(BaseModel):
     currency: str
 
 class CreateAuctionRequest(BaseModel):
-    type: str
     productId: UUID
     enabled: bool
     keys: Optional[List[str]]
     autoRenew: bool
     price: Price
-    onHand: Optional[int] = 0
-    declaredStock: Optional[int] = 0
+    onHand: Optional[int]
+    declaredStock: Optional[int]
 
+class UpdateAuctionRequest(BaseModel):
+    id: UUID
+    price: Optional[Price]
+    addedKeys: Optional[List[str]]
+    acquisitionPrice: Optional[Price]
+    removedKeys: Optional[List[str]]
+    enabled: bool = False
+    autoRenew: bool = False
+    lowStockNotificationEnabled: bool = False
+    priceChangeNotificationEnabled: bool = False
+    declaredStock: Optional[int]
