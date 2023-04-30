@@ -150,6 +150,46 @@ class EnebaClient(BaseClient):
         data = dict(response.json())
         return data
 
+    def get_product(
+        self,
+        product_id: str,
+    ):
+        response = self.post_json(
+            "graphql/",
+            {
+                "query": """query {
+                            S_product(productId: "%s") {
+                                    id
+                                    name
+                                    languages
+                                    regions { code }
+                                    releasedAt
+                                    createdAt
+                                    slug
+                                    type { value }
+                                    auctions(first: 1) {
+                                    edges {
+                                        node {
+                                        belongsToYou
+                                        isInStock
+                                        merchantName
+                                        price { amount currency }
+                                        }
+                                    }
+                                    }
+                            }
+                            }"""
+                % (product_id)
+            },
+        )
+
+        if "errors" in response.json():
+            return None
+
+        data = dict(remove_edges_and_nodes(response.json()["data"]))
+
+        return data["S_product"]
+
 
 @timed_lru_cache(210000)
 def get_access_token() -> str:

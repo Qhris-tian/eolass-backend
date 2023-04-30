@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 from src.plugins.eneba import EnebaClient
 from tests.mocks.schema import CreateAuctionMock, UpdateAuctionMock
@@ -28,3 +28,12 @@ def test_get_keys(eneba=EnebaClient()):
     response = eneba.get_keys(stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4")
     assert "data" in response
 
+
+def test_get_product(eneba=EnebaClient()):
+    response = eneba.get_product(product_id="3cafc44d-4de4-1518-a43f-b7429be2d33c")
+    assert isinstance(response, Dict)
+
+
+def test_invalid_get_product(eneba=EnebaClient()):
+    response = eneba.get_product(product_id="invalid-product")
+    assert response is None
