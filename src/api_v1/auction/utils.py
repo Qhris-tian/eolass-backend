@@ -117,7 +117,7 @@ def get_create_auction_query(data: CreateAuctionRequest, type):
             return get_create_auction_preorder(data)
         case "declaredstock":
             return get_create_auction_declared_stock(data)
-        case default:
+        case _:
             return ""
         
 def get_update_auction_query(data: UpdateAuctionRequest, type):
@@ -126,7 +126,7 @@ def get_update_auction_query(data: UpdateAuctionRequest, type):
             return get_update_auction_plain(data)
         case "declaredstock":
             return get_update_auction_declared_stock(data)
-        case defualt:
+        case _:
             return ""
         
 def get_enable_declared_stock_query():
