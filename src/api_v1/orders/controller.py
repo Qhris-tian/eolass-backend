@@ -6,13 +6,7 @@ from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, st
 from src.database import get_database
 from src.plugins.ezpin import Ezpin
 
-from .crud import (
-    create_new_order,
-    create_order_inventory,
-    find_one_order_by,
-    find_orders,
-    mark_order_as_complete,
-)
+from .crud import create_new_order, find_one_order_by, find_orders
 from .schema import CreateOrderRequest, Order, StatusEnum
 from .utils import get_month_date, refresh_local_orders, synchronize_order
 

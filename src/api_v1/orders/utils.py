@@ -1,8 +1,8 @@
 import calendar
 from datetime import datetime
-from typing import List, Dict
+from typing import Dict, List
 
-from .crud import find_pending_orders_in, create_order_inventory, mark_order_as_complete
+from .crud import create_order_inventory, find_pending_orders_in, mark_order_as_complete
 
 
 def get_month_date(date: datetime, delta: int) -> datetime:
