@@ -1,7 +1,7 @@
 from typing import List
 
 from src.plugins.eneba import EnebaClient
-from tests.mocks.schema import CreateAuctionMock
+from tests.mocks.schema import CreateAuctionMock, UpdateAuctionMock
 
 
 def test_search_product(eneba=EnebaClient()):
@@ -15,3 +15,16 @@ def test_get_auctions(eneba=EnebaClient()):
 def test_create_auction(eneba=EnebaClient()):
     response = eneba.create_auction(body=CreateAuctionMock, type="plain")
     assert "data" in response
+
+def test_update_auction(eneba=EnebaClient()):
+    response = eneba.update_auction(body=UpdateAuctionMock, type="plain")
+    assert "data" in response
+
+# def test_enable_declared_stock(eneba=EnebaClient()):
+#     respone = eneba.enable_declared_stock()
+#     assert "data" in respone
+
+def test_get_keys(eneba=EnebaClient()):
+    response = eneba.get_keys(stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4")
+    assert "data" in response
+

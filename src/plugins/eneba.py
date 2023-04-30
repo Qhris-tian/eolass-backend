@@ -126,18 +126,18 @@ class EnebaClient(BaseClient):
         data = dict(response.json())
         return data
 
-    
-    def enable_declared_stock(self):
+    # cannot make query error coming from eneba api
+    # def enable_declared_stock(self):
 
-        query = utils.get_enable_declared_stock_query()
+    #     query = utils.get_enable_declared_stock_query()
 
-        response = self.post_json(
-            "graphql/",
-            query
-        )
+    #     response = self.post_json(
+    #         "graphql/",
+    #         query
+    #     )
 
-        data = dict(response.json())
-        return data
+    #     data = dict(response.json())
+    #     return data
     
     def get_keys(self, stock_id):
         query = utils.get_keys_query(stock_id)
