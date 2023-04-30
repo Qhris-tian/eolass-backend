@@ -1,12 +1,8 @@
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from src.plugins.ezpin import Ezpin
 
-from .schema import (
-    CatalogAvailabilityRequest,
-    CatalogAvailabilityResponse,
-    CatalogListResponse,
-)
+from .schema import CatalogAvailabilityResponse, CatalogListResponse
 
 router = APIRouter()
 
@@ -23,6 +19,12 @@ def get_catalog_list(ezpin=Depends(Ezpin)):
     response_model=CatalogAvailabilityResponse,
 )
 def check_catalog_availability(
-    id=str, request: CatalogAvailabilityRequest = Body(...), ezpin=Depends(Ezpin)
+    id: str, price: float, quantity: int, ezpin=Depends(Ezpin)
 ):
-    return ezpin.catalog_availability(id)
+    if price > 0 and quantity > 0:
+        return ezpin.catalog_availability(id, {"quantity": quantity, "price": price})
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"message": "Price and quantity must be greater than zero"},
+        )

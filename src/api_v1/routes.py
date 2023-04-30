@@ -1,6 +1,9 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse, RedirectResponse
 
+from src.api_v1.catalog.controller import router as catalog_router
+from src.api_v1.inventory.controller import router as inventory_router
+from src.api_v1.orders.controller import router as order_router
 from src.api_v1.product.controller import router as product_router
 from src.config import get_settings
 
@@ -17,6 +20,24 @@ api_router.include_router(
     product_router,
     prefix="/products",
     tags=["products"],
+)
+
+api_router.include_router(
+    order_router,
+    prefix="/orders",
+    tags=["Orders"],
+)
+
+api_router.include_router(
+    catalog_router,
+    prefix="/catalogs",
+    tags=["Catalogs"],
+)
+
+api_router.include_router(
+    inventory_router,
+    prefix="/inventory",
+    tags=["Inventory"],
 )
 
 

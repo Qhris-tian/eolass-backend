@@ -47,11 +47,12 @@ class Catalog(BaseModel):
 
 class CatalogListResponse(BaseModel):
     count: int
+    next: Optional[str]
+    previous: Optional[str]
     results: List[Catalog]
 
 
 class CatalogAvailabilityRequest(BaseModel):
-    product_id: int
     quantity: int
     price: float
 
