@@ -29,3 +29,23 @@ poetry run uvicorn main:app --reload
 ```sh
 docker compose up -d --build
 ```
+
+## Lint project
+
+```sh
+poetry run ./scripts/lint.sh
+```
+
+## Run test.sh
+
+```sh
+poetry run ./scripts/test.sh
+```
+
+You can add any arguments to the command
+
+e.g. adding `-x` to stop test on first failure
+
+```sh
+poetry run ./scripts/test.sh -x
+```
