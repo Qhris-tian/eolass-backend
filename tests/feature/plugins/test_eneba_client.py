@@ -8,21 +8,26 @@ def test_search_product(eneba=EnebaClient()):
     response = eneba.search(product_name="call", count=1)
     assert isinstance(response, List)
 
+
 def test_get_auctions(eneba=EnebaClient()):
     response = eneba.get_auctions(limit=1)
     assert "edges" in response
+
 
 def test_create_auction(eneba=EnebaClient()):
     response = eneba.create_auction(body=CreateAuctionMock, type="plain")
     assert "data" in response
 
+
 def test_update_auction(eneba=EnebaClient()):
     response = eneba.update_auction(body=UpdateAuctionMock, type="plain")
     assert "data" in response
 
+
 # def test_enable_declared_stock(eneba=EnebaClient()):
 #     respone = eneba.enable_declared_stock()
 #     assert "data" in respone
+
 
 def test_get_keys(eneba=EnebaClient()):
     response = eneba.get_keys(stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4")

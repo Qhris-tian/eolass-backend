@@ -2,11 +2,11 @@ from typing import Dict, List
 
 import requests
 
+from src.api_v1.auction import utils
+from src.api_v1.auction.schema import CreateAuctionRequest, UpdateAuctionRequest
 from src.config import get_settings
 from src.decorators import timed_lru_cache
 from src.plugins.base_client import BaseClient
-from src.api_v1.auction.schema import CreateAuctionRequest, UpdateAuctionRequest
-from src.api_v1.auction import utils
 
 settings = get_settings()
 
@@ -61,12 +61,10 @@ class EnebaClient(BaseClient):
         data = dict(remove_edges_and_nodes(response.json()["data"]))
 
         return data["S_products"]
-    
 
     def get_auctions(self, limit):
-
         query = {
-        "query": """query {
+            "query": """query {
             S_stock(
                 first: %s
             ) {
@@ -90,38 +88,26 @@ class EnebaClient(BaseClient):
             }
         }
         """
-        % (limit)
+            % (limit)
         }
-        response = self.post_json(
-            "graphql/",
-            query
-        )
+        response = self.post_json("graphql/", query)
 
         data = dict(response.json()["data"])
 
         return data["S_stock"]
-    
 
     def create_auction(self, body: CreateAuctionRequest, type):
-
         query = utils.get_create_auction_query(body, type)
 
-        response = self.post_json(
-            "graphql/",
-            query
-        )
+        response = self.post_json("graphql/", query)
 
         data = dict(response.json())
         return data
-    
-    def update_auction(self, body: UpdateAuctionRequest, type):
 
+    def update_auction(self, body: UpdateAuctionRequest, type):
         query = utils.get_update_auction_query(body, type)
 
-        response = self.post_json(
-            "graphql/",
-            query
-        )
+        response = self.post_json("graphql/", query)
 
         data = dict(response.json())
         return data
@@ -138,14 +124,11 @@ class EnebaClient(BaseClient):
 
     #     data = dict(response.json())
     #     return data
-    
+
     def get_keys(self, stock_id):
         query = utils.get_keys_query(stock_id)
 
-        response = self.post_json(
-            "graphql/",
-            query
-        )
+        response = self.post_json("graphql/", query)
 
         data = dict(response.json())
         return data

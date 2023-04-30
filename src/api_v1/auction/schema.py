@@ -1,5 +1,5 @@
-from uuid import UUID
 from typing import List, Optional, Union
+from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class Price(BaseModel):
     amount: int
     currency: str
+
 
 class CreateAuctionRequest(BaseModel):
     productId: UUID
@@ -16,6 +17,7 @@ class CreateAuctionRequest(BaseModel):
     price: Price
     onHand: Optional[int]
     declaredStock: Optional[int]
+
 
 class UpdateAuctionRequest(BaseModel):
     id: UUID

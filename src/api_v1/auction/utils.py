@@ -1,11 +1,11 @@
-
-from .schema import CreateAuctionRequest, UpdateAuctionRequest
 import json
 
+from .schema import CreateAuctionRequest, UpdateAuctionRequest
+
+
 def get_create_auction_plain(body: CreateAuctionRequest):
-    
     return {
-            "query": """
+        "query": """
             mutation {
                 S_createAuction(
                     input: {
@@ -21,13 +21,20 @@ def get_create_auction_plain(body: CreateAuctionRequest):
                 }
                 }
             """
-            %(body.productId, body.enabled, json.dumps(body.keys), body.autoRenew, body.price.amount, body.price.currency)
-        }
+        % (
+            body.productId,
+            body.enabled,
+            json.dumps(body.keys),
+            body.autoRenew,
+            body.price.amount,
+            body.price.currency,
+        )
+    }
+
 
 def get_create_auction_preorder(body: CreateAuctionRequest):
-
     return {
-            "query": """
+        "query": """
                 mutation {
                     S_createAuction(
                         input: {
@@ -43,14 +50,20 @@ def get_create_auction_preorder(body: CreateAuctionRequest):
                     }
                 }
             """
-            %(body.productId, body.enabled, body.onHand, body.autoRenew, body.price.amount, body.price.currency)
-        }
+        % (
+            body.productId,
+            body.enabled,
+            body.onHand,
+            body.autoRenew,
+            body.price.amount,
+            body.price.currency,
+        )
+    }
 
 
 def get_create_auction_declared_stock(body: CreateAuctionRequest):
-    
     return {
-            "query": """
+        "query": """
             mutation {
                 S_createAuction(
                     input: {
@@ -66,11 +79,18 @@ def get_create_auction_declared_stock(body: CreateAuctionRequest):
                 }
                 }
             """
-            %(body.productId, body.enabled, body.declaredStock, body.autoRenew, body.price.amount, body.price.currency)
-        }
+        % (
+            body.productId,
+            body.enabled,
+            body.declaredStock,
+            body.autoRenew,
+            body.price.amount,
+            body.price.currency,
+        )
+    }
+
 
 def get_update_auction_plain(body: UpdateAuctionRequest):
-
     return {
         "query": """
         mutation {
@@ -87,11 +107,17 @@ def get_update_auction_plain(body: UpdateAuctionRequest):
             }
             }
         """
-        %(body.id, json.dumps(body.addedKeys), json.dumps(body.removedKeys), body.price.amount, body.price.currency)
+        % (
+            body.id,
+            json.dumps(body.addedKeys),
+            json.dumps(body.removedKeys),
+            body.price.amount,
+            body.price.currency,
+        )
     }
 
-def get_update_auction_declared_stock(body: UpdateAuctionRequest):
 
+def get_update_auction_declared_stock(body: UpdateAuctionRequest):
     return {
         "query": """
             mutation {
@@ -106,8 +132,9 @@ def get_update_auction_declared_stock(body: UpdateAuctionRequest):
             }
             }
         """
-        %(body.id, body.declaredStock)
+        % (body.id, body.declaredStock)
     }
+
 
 def get_create_auction_query(data: CreateAuctionRequest, type):
     match type:
@@ -119,7 +146,8 @@ def get_create_auction_query(data: CreateAuctionRequest, type):
             return get_create_auction_declared_stock(data)
         case _:
             return ""
-        
+
+
 def get_update_auction_query(data: UpdateAuctionRequest, type):
     match type:
         case "plain":
@@ -128,9 +156,9 @@ def get_update_auction_query(data: UpdateAuctionRequest, type):
             return get_update_auction_declared_stock(data)
         case _:
             return ""
-        
+
+
 def get_enable_declared_stock_query():
-    
     return {
         "query": """
             mutation {
@@ -144,7 +172,6 @@ def get_enable_declared_stock_query():
 
 
 def get_keys_query(stock_id):
-
     return {
         "query": """
             {
@@ -159,5 +186,5 @@ def get_keys_query(stock_id):
                 }
             }
         """
-        %(stock_id)
+        % (stock_id)
     }
