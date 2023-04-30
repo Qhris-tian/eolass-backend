@@ -19,7 +19,7 @@ class CreateAuctionRequest(BaseModel):
 
 class UpdateAuctionRequest(BaseModel):
     id: UUID
-    price: Optional[Price]
+    price: Price
     addedKeys: Optional[List[str]]
     acquisitionPrice: Optional[Price]
     removedKeys: Optional[List[str]]
