@@ -1,5 +1,5 @@
 from uuid import UUID
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from pydantic import BaseModel
 
@@ -10,9 +10,9 @@ class Price(BaseModel):
 
 class CreateAuctionRequest(BaseModel):
     productId: UUID
-    enabled: bool
+    enabled: Union[bool, str]
     keys: Optional[List[str]]
-    autoRenew: bool
+    autoRenew: Union[bool, str]
     price: Price
     onHand: Optional[int]
     declaredStock: Optional[int]
@@ -23,8 +23,8 @@ class UpdateAuctionRequest(BaseModel):
     addedKeys: Optional[List[str]]
     acquisitionPrice: Optional[Price]
     removedKeys: Optional[List[str]]
-    enabled: bool = False
-    autoRenew: bool = False
+    enabled: Union[bool, str] = False
+    autoRenew: Union[bool, str] = False
     lowStockNotificationEnabled: bool = False
     priceChangeNotificationEnabled: bool = False
     declaredStock: Optional[int]
