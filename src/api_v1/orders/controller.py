@@ -14,7 +14,7 @@ from .crud import (
     mark_order_as_complete,
 )
 from .schema import CreateOrderRequest, Order, StatusEnum
-from .utils import get_month_date, refresh_local_orders
+from .utils import get_month_date, refresh_local_orders, synchronize_order
 
 router = APIRouter()
 
@@ -61,7 +61,7 @@ def get_order_history(
         start_date=start_date, end_date=end_date, limit=limit, offset=offset
     )
 
-    background_tasks.add_task(refresh_local_orders, history, db)
+    background_tasks.add_task(refresh_local_orders, history, db, ezpin)
 
     return history
 
@@ -93,17 +93,9 @@ async def refresh_order(
         )
 
     if order["status"] == StatusEnum.pending.value:
-        order_ezpin = ezpin.get_order(reference_code)
+        response = await synchronize_order(order, db, ezpin)
 
-        if order_ezpin["is_completed"]:
-            cards = ezpin.get_order_cards(reference_code)
-            await create_order_inventory(order_ezpin, cards, db)
-
-            await mark_order_as_complete(reference_code, db)
-
-            return {"message": "Order inventory created."}
-
-        return {"message": "Order is still in progress."}  # pragma: no cover
+        return response
 
     return {"message": "Order has already been completed."}
 

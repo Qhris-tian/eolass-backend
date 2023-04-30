@@ -1,8 +1,8 @@
 import calendar
 from datetime import datetime
-from typing import List
+from typing import List, Dict
 
-from .crud import find_pending_orders_in
+from .crud import find_pending_orders_in, create_order_inventory, mark_order_as_complete
 
 
 def get_month_date(date: datetime, delta: int) -> datetime:
@@ -13,12 +13,27 @@ def get_month_date(date: datetime, delta: int) -> datetime:
     return date.replace(day=d, month=m, year=y)
 
 
-async def refresh_local_orders(order_list: List, db):
+async def refresh_local_orders(order_list: List, db, ezpin) -> None:
     found_orders = await find_pending_orders_in(
         key="reference_code", values=order_list, db=db
     )
 
-    if found_orders is None:  # pragma: no cover
+    if len(found_orders) == 0:
         return
 
-    # refresh each pending individual
+    for order in found_orders:  # pragma: no cover
+        await synchronize_order(order, db, ezpin)
+
+
+async def synchronize_order(order, db, ezpin) -> Dict:
+    order_ezpin = ezpin.get_order(order["reference_code"])
+
+    if order_ezpin["is_completed"]:
+        cards = ezpin.get_order_cards(order["reference_code"])
+        await create_order_inventory(order_ezpin, cards, db)
+
+        await mark_order_as_complete(order["reference_code"], db)
+
+        return {"message": "Order inventory created."}
+
+    return {"message": "Order is still in progress."}  # pragma: no cover
