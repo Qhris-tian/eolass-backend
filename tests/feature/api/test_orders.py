@@ -1,7 +1,7 @@
-from typing import List
-from uuid import uuid4
-from urllib.parse import urlencode
 from datetime import datetime
+from typing import List
+from urllib.parse import urlencode
+from uuid import uuid4
 
 from fastapi import status
 
@@ -79,6 +79,7 @@ def test_can_refresh_existing_order(test_app):
     )
     assert response.status_code == status.HTTP_200_OK
 
+
 def test_cannot_refresh_existing_completed_order(test_app):
     response = test_app.post(
         base_endpoint, json={"product_id": 12, "quantity": 12, "price": 2.3}
@@ -91,7 +92,7 @@ def test_cannot_refresh_existing_completed_order(test_app):
         "{}/{}/refresh".format(base_endpoint, created_order["reference_code"])
     )
     assert response.status_code == status.HTTP_200_OK
-    
+
     response = test_app.get(
         "{}/{}/refresh".format(base_endpoint, created_order["reference_code"])
     )

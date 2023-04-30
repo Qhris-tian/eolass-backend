@@ -24,7 +24,11 @@ async def find_one_order_by(key: str, value: Any, db):
 
 
 async def find_pending_orders_in(key: str, values: List, db, count: int = 10):
-    orders = await db["orders"].find({key: {"$in": values}}, {"status": StatusEnum.pending.value}).to_list(count)
+    orders = (
+        await db["orders"]
+        .find({key: {"$in": values}}, {"status": StatusEnum.pending.value})
+        .to_list(count)
+    )
 
     return orders
 

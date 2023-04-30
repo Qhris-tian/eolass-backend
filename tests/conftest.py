@@ -39,5 +39,5 @@ def test_app():
 
     with TestClient(app) as test_client:
         yield test_client
-    
+
     # drop test database

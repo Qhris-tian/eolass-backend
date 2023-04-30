@@ -1,6 +1,7 @@
 import calendar
 from datetime import datetime
 from typing import List
+
 from .crud import find_pending_orders_in
 
 
@@ -12,12 +13,12 @@ def get_month_date(date: datetime, delta: int) -> datetime:
     return date.replace(day=d, month=m, year=y)
 
 
-async def refresh_local_orders(order_list: List, db): 
+async def refresh_local_orders(order_list: List, db):
     found_orders = await find_pending_orders_in(
         key="reference_code", values=order_list, db=db
     )
 
-    if found_orders is None: # pragma: no cover
-       return 
+    if found_orders is None:  # pragma: no cover
+        return
 
     # refresh each pending individual

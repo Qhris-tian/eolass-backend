@@ -4,7 +4,6 @@ from uuid import UUID
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
 
 from src.database import get_database
-
 from src.plugins.ezpin import Ezpin
 
 from .crud import (
@@ -50,7 +49,7 @@ def get_order_history(
     limit: int = 10,
     offset: int = 0,
     ezpin=Depends(Ezpin),
-    db=Depends(get_database)
+    db=Depends(get_database),
 ):
     """Get order history."""
     if start_date is None:
