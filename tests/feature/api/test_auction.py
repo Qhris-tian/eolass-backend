@@ -1,5 +1,4 @@
 from fastapi import status
-import json
 from tests.mocks.schema import CreateAuctionMock, UpdateAuctionMock
 
 def test_get_auctions_endpoint(test_app):
