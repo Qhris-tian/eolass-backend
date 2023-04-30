@@ -36,7 +36,8 @@ docker compose up -d --build
 poetry run ./scripts/lint.sh
 ```
 
-## Run test.sh
+## Run tests
+This project uses pytests to run test.
 
 ```sh
 poetry run ./scripts/test.sh
