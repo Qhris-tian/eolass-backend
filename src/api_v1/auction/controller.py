@@ -45,15 +45,15 @@ def update_auction(stock_id: UUID,
         "response": response
     }
 
+# error coming from eneba api
+# @router.post("/enable-declared-stock")
+# def enable_declared_stock(eneba=Depends(EnebaClient)):
 
-@router.post("/enable-declared-stock")
-def enable_declared_stock(eneba=Depends(EnebaClient)):
+#     response = eneba.enable_declared_stock()
 
-    response = eneba.enable_declared_stock()
-
-    return {
-        "response": response
-    }
+#     return {
+#         "response": response
+#     }
 
 @router.get("/keys/{stock_id}")
 def get_keys(stock_id: UUID,
