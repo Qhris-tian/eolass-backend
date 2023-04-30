@@ -37,6 +37,7 @@ poetry run ./scripts/lint.sh
 ```
 
 ## Run tests
+
 This project uses pytests to run test.
 
 ```sh
