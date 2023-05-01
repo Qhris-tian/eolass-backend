@@ -2,6 +2,7 @@ import random
 import string
 from datetime import datetime
 from typing import Dict
+from uuid import uuid4
 
 
 class Ezpin:
@@ -10,7 +11,20 @@ class Ezpin:
     def get_order_history(
         self, start_date: datetime, end_date: datetime, limit: int = 10, offset: int = 0
     ):
-        return [dummy_order] * 5
+        return {
+            "count": limit,
+            "next": "",
+            "previous": "",
+            "results": [
+                {
+                    **dummy_order,
+                    "reference_code": str(uuid4()),
+                    "count": (i % 5) + 1,
+                    "status_text": "accept" if i % 3 else "pending",
+                }
+                for i in range(limit)
+            ],
+        }
 
     def get_order(self, reference_code: str):
         return {**dummy_order, "reference_code": reference_code}
@@ -26,7 +40,7 @@ class Ezpin:
             "count": 5,
             "next": "dummy_next_url",
             "previous": "dummy_previous_url",
-            "results": [dummy_product] * 5,
+            "results": [dummy_product for i in range(5)],
         }
 
     def catalog_availability(self, product_id: str, data: Dict):
@@ -62,7 +76,7 @@ dummy_order = {
 dummy_product = {
     "sku": 562,
     "upc": 659245724761,
-    "title": "2,400 CALL OF DUTY: MODERN WARFARE POINTS",
+    "title": "Amazon DE",
     "min_price": 19.99,
     "max_price": 19.99,
     "pre_order": False,
@@ -71,7 +85,7 @@ dummy_product = {
     "currency": {"currency": "Dollars", "symbol": "$", "code": "USD"},
     "categories": [{"name": "CALL OF DUTY"}, {"name": "CALL OF DUTY"}],
     "regions": [{"name": "Global", "code": "GLC"}],
-    "image": "https://media.ezpaypin.com/media/products/images/2020/08/2400_CALL_OF_DUTY.jpg",
+    "image": "https://media.ezpaypin.com/media/products/images/2020/09/amazon.jpg",
     "description": "",
     "showing_price": {
         "price": 35.0,

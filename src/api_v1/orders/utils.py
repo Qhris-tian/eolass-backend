@@ -28,7 +28,7 @@ async def refresh_local_orders(order_list: List, db, ezpin) -> None:
 async def synchronize_order(order, db, ezpin) -> Dict:
     order_ezpin = ezpin.get_order(order["reference_code"])
 
-    if order_ezpin["is_completed"]:
+    if order_ezpin["is_completed"] and order_ezpin["status"] == 1:
         cards = ezpin.get_order_cards(order["reference_code"])
         await create_order_inventory(order_ezpin, cards, db)
 
