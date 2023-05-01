@@ -9,7 +9,7 @@ from src.database import get_database
 from tests.mocks.ezpin import Ezpin
 
 from .crud import create_new_order, find_one_order_by, find_orders
-from .schema import CreateOrderRequest, Order, StatusEnum, OrderHistory
+from .schema import CreateOrderRequest, Order, OrderHistory, StatusEnum
 from .utils import get_month_date, refresh_local_orders, synchronize_order
 
 router = APIRouter()
@@ -94,9 +94,11 @@ async def refresh_order(
 
     return {"message": "Order has already been completed."}
 
+
 @router.get("/{reference_code}", summary="Get Order cards.")
 def get_order_cards():
     pass
+
 
 @router.get("/events", summary="Process order event from ezpin.")
 def order_event():  # pragma: no cover

@@ -1,8 +1,8 @@
 import random
 import string
-from uuid import uuid4
 from datetime import datetime
 from typing import Dict
+from uuid import uuid4
 
 
 class Ezpin:
