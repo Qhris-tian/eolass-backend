@@ -36,7 +36,7 @@ class OrderHistory(BaseModel):
     count: int
     next: Optional[str]
     previous: Optional[str]
-    result: List[Order]
+    results: List[Order]
 
 
 class StatusEnum(Enum):
@@ -48,6 +48,7 @@ class CreateOrderRequest(BaseModel):
     product_id: int
     quantity: int
     price: float
+    pre_order: bool
 
 
 class CreateOrderInDB(CreateOrderRequest, ModelMixin):

@@ -35,7 +35,9 @@ async def find_pending_orders_in(key: str, values: List, db, count: int = 10):
 
 async def create_order_inventory(order: Dict, cards, db):
     """Create or update inventory with order details."""
-    inventory = CreateInventoryInDB(**order["product"])
+    inventory = CreateInventoryInDB(
+        **order["product"], price=order["total_customer_cost"] / order["count"]
+    )
 
     found_inventory = await db["inventory"].find_one({"sku": order["product"]["sku"]})
 

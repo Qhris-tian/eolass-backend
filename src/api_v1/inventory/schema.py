@@ -14,6 +14,7 @@ class Inventory(BaseModel):
 class CreateInventoryInDB(ModelMixin):
     sku: int
     title: str
+    price: Optional[float]
 
 
 class Card(BaseModel):

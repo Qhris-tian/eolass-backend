@@ -4,10 +4,12 @@ from uuid import UUID
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
 
 from src.database import get_database
-from src.plugins.ezpin import Ezpin
+
+# from src.plugins.ezpin import Ezpin
+from tests.mocks.ezpin import Ezpin
 
 from .crud import create_new_order, find_one_order_by, find_orders
-from .schema import CreateOrderRequest, Order, StatusEnum
+from .schema import CreateOrderRequest, Order, StatusEnum, OrderHistory
 from .utils import get_month_date, refresh_local_orders, synchronize_order
 
 router = APIRouter()
@@ -35,7 +37,7 @@ async def create_order(
     )
 
 
-@router.get("/", summary="Get order history.")
+@router.get("/", summary="Get order history.", response_model=OrderHistory)
 def get_order_history(
     background_tasks: BackgroundTasks,
     start_date: datetime | None = None,
@@ -55,7 +57,7 @@ def get_order_history(
         start_date=start_date, end_date=end_date, limit=limit, offset=offset
     )
 
-    background_tasks.add_task(refresh_local_orders, history, db, ezpin)
+    background_tasks.add_task(refresh_local_orders, history["results"], db, ezpin)
 
     return history
 
@@ -92,6 +94,9 @@ async def refresh_order(
 
     return {"message": "Order has already been completed."}
 
+@router.get("/{reference_code}", summary="Get Order cards.")
+def get_order_cards():
+    pass
 
 @router.get("/events", summary="Process order event from ezpin.")
 def order_event():  # pragma: no cover

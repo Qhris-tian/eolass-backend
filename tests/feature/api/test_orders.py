@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import Dict, List
 from urllib.parse import urlencode
 from uuid import uuid4
 
@@ -10,14 +10,16 @@ base_endpoint = "/api/v1/orders"
 
 def test_cannot_create_order_when_price_or_quantity_is_less_than_zero(test_app):
     response = test_app.post(
-        base_endpoint, json={"product_id": 12, "quantity": 0, "price": 0}
+        base_endpoint,
+        json={"product_id": 12, "quantity": 0, "price": 0, "pre_order": True},
     )
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
 def test_can_create_order(test_app):
     response = test_app.post(
-        base_endpoint, json={"product_id": 12, "quantity": 12, "price": 2.3}
+        base_endpoint,
+        json={"product_id": 12, "quantity": 12, "price": 2.3, "pre_order": True},
     )
     assert response.status_code == status.HTTP_201_CREATED
 
@@ -26,14 +28,17 @@ def test_can_get_order_history_without_params(test_app):
     response = test_app.get(base_endpoint)
 
     assert response.status_code == status.HTTP_200_OK
-    assert isinstance(response.json(), List)
+    assert isinstance(response.json(), Dict)
+    assert isinstance(response.json()["results"], List)
 
 
 def test_can_get_order_history_with_only_start_date(test_app):
     params = urlencode({"start_date": datetime.now()})
     response = test_app.get(f"{base_endpoint}/?{params}")
 
-    assert isinstance(response.json(), List)
+    assert isinstance(response.json(), Dict)
+    assert isinstance(response.json()["results"], List)
+
     assert response.status_code == status.HTTP_200_OK
 
 
@@ -43,7 +48,8 @@ def test_can_get_order_history_with_only_end_date(test_app):
     response = test_app.get(f"{base_endpoint}/?{params}")
 
     assert response.status_code == status.HTTP_200_OK
-    assert isinstance(response.json(), List)
+    assert isinstance(response.json(), Dict)
+    assert isinstance(response.json()["results"], List)
 
 
 def test_can_get_local_orders(test_app):
@@ -68,7 +74,8 @@ def test_cannot_refresh_non_existing_order(test_app):
 
 def test_can_refresh_existing_order(test_app):
     response = test_app.post(
-        base_endpoint, json={"product_id": 12, "quantity": 12, "price": 2.3}
+        base_endpoint,
+        json={"product_id": 12, "quantity": 12, "price": 2.3, "pre_order": False},
     )
     assert response.status_code == status.HTTP_201_CREATED
 
@@ -82,7 +89,8 @@ def test_can_refresh_existing_order(test_app):
 
 def test_cannot_refresh_existing_completed_order(test_app):
     response = test_app.post(
-        base_endpoint, json={"product_id": 12, "quantity": 12, "price": 2.3}
+        base_endpoint,
+        json={"product_id": 12, "quantity": 12, "price": 2.3, "pre_order": False},
     )
     assert response.status_code == status.HTTP_201_CREATED
 
