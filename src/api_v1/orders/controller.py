@@ -70,7 +70,6 @@ async def get_local_orders(db=Depends(get_database)):
 @router.get("/{reference_code}", summary="Get order details.")
 def get_order(reference_code: UUID, ezpin=Depends(Ezpin)):
     """Get order details."""
-    # Return order details from ezpin
     return ezpin.get_order(reference_code)
 
 
