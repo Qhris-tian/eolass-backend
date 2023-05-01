@@ -96,7 +96,7 @@ async def refresh_order(
 
 
 @router.get("/{reference_code}", summary="Get Order cards.")
-def get_order_cards():
+def get_order_cards():  # pragma: no cover
     pass
 
 
