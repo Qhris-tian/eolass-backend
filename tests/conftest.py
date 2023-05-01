@@ -4,8 +4,10 @@ from starlette.testclient import TestClient
 from src.config import Settings, get_settings
 from src.main import create_application
 from src.plugins.eneba import EnebaClient
+from src.plugins.ezpin import Ezpin
 
 from .mocks.eneba import EnebaClient as MockEnebaClient
+from .mocks.ezpin import Ezpin as MockEzpin
 
 
 def get_settings_override() -> Settings:
@@ -33,6 +35,9 @@ def test_app():
     app = create_application()
     app.dependency_overrides[get_settings] = get_settings_override
     app.dependency_overrides[EnebaClient] = MockEnebaClient
+    app.dependency_overrides[Ezpin] = MockEzpin
 
     with TestClient(app) as test_client:
         yield test_client
+
+    # drop test database
