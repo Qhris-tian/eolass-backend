@@ -1,8 +1,15 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 
 from src.database import get_database
 
-from .crud import filter_inventory_by_title, find_inventory, find_product_cards
+from .crud import (
+    create_product_card,
+    filter_inventory_by_title,
+    find_inventory,
+    find_one_product_by,
+    find_product_cards,
+)
+from .schema import CreateInventoryCardRequest
 
 router = APIRouter()
 
@@ -23,11 +30,31 @@ async def search_inventory(name: str, db=Depends(get_database)):
     return inventory
 
 
-@router.get("/{product_sku}/cards", summary="Get product cards")
+@router.get("/{product_sku}/cards", summary="Get product cards.")
 async def get_inventory_cards(product_sku: int, db=Depends(get_database)):
     response = await find_product_cards(product=product_sku, db=db)
 
     return response
+
+
+@router.post("/{sku}/cards", summary="Create product card.")
+async def create_inventory_card(
+    sku: int,
+    request: CreateInventoryCardRequest = Body(...),
+    db=Depends(get_database),
+):
+    product = await find_one_product_by(by="sku", value=sku, db=db)
+
+    if product:
+        response = await create_product_card(
+            product=sku, card_detais=request.dict(), db=db
+        )
+
+        return response
+
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST, detail="Product not found."
+    )
 
 
 @router.post("/", summary="Create new product.")

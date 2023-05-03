@@ -27,7 +27,14 @@ class Card(BaseModel):
 
 class CreateCardInDB(ModelMixin):
     card_number: str
-    pin_code: str
-    claim_url: str
+    pin_code: Optional[str]
+    claim_url: Optional[str]
     expire_date: Optional[datetime | str]
     product: int
+
+
+class CreateInventoryCardRequest(BaseModel):
+    card_number: str
+    pin_code: Optional[str]
+    claim_url: Optional[str]
+    expire_date: Optional[datetime | str]
