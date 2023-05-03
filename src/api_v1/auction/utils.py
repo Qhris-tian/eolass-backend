@@ -40,6 +40,7 @@ def get_create_auction_preorder(body: CreateAuctionRequest):
                         input: {
                         productId: "%s"
                         enabled: %s
+                        keys: %s
                         onHand: %s
                         autoRenew: %s
                         price: { amount: %s, currency: "%s" }
@@ -53,6 +54,7 @@ def get_create_auction_preorder(body: CreateAuctionRequest):
         % (
             body.productId,
             body.enabled,
+            json.dumps(body.keys),
             body.onHand,
             body.autoRenew,
             body.price.amount,
