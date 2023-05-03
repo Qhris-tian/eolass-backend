@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from fastapi.encoders import jsonable_encoder
 
-from .schema import CreateCardInDB
+from .schema import CreateCardInDB, CreateInventoryInDB, UpdateInventoryInDB
 
 
 async def find_inventory(limit: int, db):
@@ -35,3 +37,22 @@ async def create_product_card(product, card_detais, db):
     new_card = await db["cards"].find_one({"_id": result.inserted_id})
 
     return new_card
+
+
+async def update_product(sku, product_details, db):
+    inventory = UpdateInventoryInDB(**product_details, updated_at=datetime.now())
+
+    await db["inventory"].update_one(
+        {"sku": sku}, {"$set": jsonable_encoder(inventory, exclude_none=True)}
+    )
+    new_product = await db["inventory"].find_one({"sku": sku})
+
+    return new_product
+
+
+async def create_product(product_details, db):
+    inventory = CreateInventoryInDB(**product_details)
+    result = await db["inventory"].insert_one(jsonable_encoder(inventory))
+    new_product = await db["inventory"].find_one({"_id": result.inserted_id})
+
+    return new_product

@@ -3,13 +3,15 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status
 from src.database import get_database
 
 from .crud import (
+    create_product,
     create_product_card,
     filter_inventory_by_title,
     find_inventory,
     find_one_product_by,
     find_product_cards,
+    update_product,
 )
-from .schema import CreateInventoryCardRequest
+from .schema import BaseInventory, CreateInventoryCardRequest, Inventory
 
 router = APIRouter()
 
@@ -60,13 +62,37 @@ async def create_inventory_card(
     )
 
 
-@router.post("/", summary="Create new product.")
-def create_inventory():  # pragma: no cover
-    """Create a new product."""
-    pass
+@router.post(
+    "/",
+    summary="Create new product.",
+    status_code=status.HTTP_201_CREATED,
+)
+async def create_inventory(
+    request: Inventory = Body(...),
+    db=Depends(get_database),
+):
+    existing_product = await find_one_product_by(by="sku", value=request.sku, db=db)
+
+    if existing_product:
+        product = await update_product(request.sku, request.dict(), db)
+    else:
+        product = await create_product(request.dict(), db)
+
+    return product
 
 
-@router.put("/", summary="Update inventory product.")
-def update_inventory():  # pragma: no cover
+@router.put("/{sku}", summary="Update inventory product.")
+async def update_inventory(
+    sku: int,
+    request: BaseInventory = Body(...),
+    db=Depends(get_database),
+):
     """Update inventory product."""
-    pass
+    existing_product = await find_one_product_by(by="sku", value=sku, db=db)
+    if existing_product:
+        product = await update_product(sku, request.dict(), db)
+        return product
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Inventory does not exist."
+    )

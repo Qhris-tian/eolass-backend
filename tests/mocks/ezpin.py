@@ -21,7 +21,7 @@ class Ezpin:
                     "reference_code": str(uuid4()),
                     "count": (i % 5) + 1,
                     "status_text": "accept" if i % 3 else "pending",
-                    "is_completed" : True if i % 3 else False,
+                    "is_completed": True if i % 3 else False,
                     "product": {
                         "sku": random.randint(1001, 9999),
                         "title": dummy_product_names[random.randint(0, 4)],
