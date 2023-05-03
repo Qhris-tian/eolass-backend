@@ -25,3 +25,48 @@ def test_can_inventory_cards(test_app):
 
     assert response.status_code == status.HTTP_200_OK
     assert isinstance(response.json(), List)
+
+
+def test_can_create_inventory_card(test_app):
+    response = test_app.get(base_endpoint)
+    inventory = response.json()
+    assert response.status_code == status.HTTP_200_OK
+    assert isinstance(inventory, List)
+
+    response = test_app.post(
+        "{b}/{sku}/cards".format(b=base_endpoint, sku=inventory[0]["sku"]),
+        json={
+            "card_number": "ASDFAFFSAD",
+            "pin_code": "234124124141",
+            "claim_url": None,
+            "expire_date": "2023-04-02",
+        },
+    )
+
+    assert response.status_code == status.HTTP_201_CREATED
+
+
+def test_cannot_create_card_for_non_existing_inventory(test_app):
+    response = test_app.post(
+        f"{base_endpoint}/232411313213/cards",
+        json={
+            "card_number": "ASDFAFFSAD",
+            "pin_code": "234124124141",
+            "claim_url": None,
+            "expire_date": "2023-04-02",
+        },
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_cannot_create_card_for_invalid_inventory_sku(test_app):
+    response = test_app.post(
+        f"{base_endpoint}/string/cards",
+        json={
+            "card_number": "ASDFAFFSAD",
+            "pin_code": "234124124141",
+            "claim_url": None,
+            "expire_date": "2023-04-02",
+        },
+    )
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY

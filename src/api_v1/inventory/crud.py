@@ -23,7 +23,7 @@ async def filter_inventory_by_title(title: str, db):
     return products
 
 
-async def find_one_product_by(by: str, value: int, db):
+async def find_one_product_by(by: str, value: str | int, db):
     product = await db["inventory"].find_one({by: value})
     return product
 

@@ -37,7 +37,11 @@ async def get_inventory_cards(product_sku: int, db=Depends(get_database)):
     return response
 
 
-@router.post("/{sku}/cards", summary="Create product card.")
+@router.post(
+    "/{sku}/cards",
+    summary="Create an order.",
+    status_code=status.HTTP_201_CREATED,
+)
 async def create_inventory_card(
     sku: int,
     request: CreateInventoryCardRequest = Body(...),
@@ -46,14 +50,13 @@ async def create_inventory_card(
     product = await find_one_product_by(by="sku", value=sku, db=db)
 
     if product:
-        response = await create_product_card(
-            product=sku, card_detais=request.dict(), db=db
-        )
+        card = await create_product_card(product=sku, card_detais=request.dict(), db=db)
 
-        return response
+        return {"card": card}
 
     raise HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST, detail="Product not found."
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Price and quantity must be greater than zero",
     )
 
 
