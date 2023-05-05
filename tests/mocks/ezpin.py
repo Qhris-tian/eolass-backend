@@ -21,6 +21,11 @@ class Ezpin:
                     "reference_code": str(uuid4()),
                     "count": (i % 5) + 1,
                     "status_text": "accept" if i % 3 else "pending",
+                    "is_completed": True if i % 3 else False,
+                    "product": {
+                        "sku": random.randint(1001, 9999),
+                        "title": dummy_product_names[random.randint(0, 4)],
+                    },
                 }
                 for i in range(limit)
             ],
@@ -40,7 +45,10 @@ class Ezpin:
             "count": 5,
             "next": "dummy_next_url",
             "previous": "dummy_previous_url",
-            "results": [dummy_product for i in range(5)],
+            "results": [
+                {**dummy_product, "title": dummy_product_names[random.randint(0, 4)]}
+                for i in range(5)
+            ],
         }
 
     def catalog_availability(self, product_id: str, data: Dict):
@@ -54,6 +62,14 @@ class Ezpin:
         return {"availability": available, "detail": detail}
 
 
+dummy_product_names = [
+    "App Store & iTunes US",
+    "Call of Duty",
+    "Tekken",
+    "Fifa 2055",
+    "Amazon DE",
+]
+
 dummy_order = {
     "order_id": 156734,
     "delivery_type": 3,
@@ -63,7 +79,10 @@ dummy_order = {
     "created_time": "2021-09-19T12:46:19.577169",
     "terminal_id": 97,
     "reference_code": "bb715b4e-6792-45ca-9ca5-2d708f41a6e0",
-    "product": {"sku": random.randint(1001, 9999), "title": "App Store & iTunes US"},
+    "product": {
+        "sku": random.randint(1001, 9999),
+        "title": dummy_product_names[random.randint(0, 4)],
+    },
     "count": 1,
     "total_face_value": 3.0,
     "total_fees": 0,
@@ -76,7 +95,7 @@ dummy_order = {
 dummy_product = {
     "sku": 562,
     "upc": 659245724761,
-    "title": "Amazon DE",
+    "title": dummy_product_names[random.randint(0, 4)],
     "min_price": 19.99,
     "max_price": 19.99,
     "pre_order": False,

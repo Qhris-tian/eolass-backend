@@ -13,6 +13,7 @@ def get_database(settings: Settings = Depends(get_settings)):
     return client[settings.DATABASE_NAME]
 
 
-async def drop_test_database(database_dsn):  # pragma: no cover
-    client = get_database_client(database_dsn)
+async def drop_test_database():  # pragma: no cover
+    settings = get_settings()
+    client = get_database_client(settings.DATABASE_DSN)
     await client.drop_database("test")

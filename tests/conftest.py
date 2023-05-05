@@ -1,7 +1,10 @@
+import asyncio
+
 import pytest
 from starlette.testclient import TestClient
 
 from src.config import Settings, get_settings
+from src.database import drop_test_database
 from src.main import create_application
 from src.plugins.eneba import EnebaClient
 from src.plugins.ezpin import Ezpin
@@ -39,5 +42,4 @@ def test_app():
 
     with TestClient(app) as test_client:
         yield test_client
-
-    # drop test database
+    asyncio.run(drop_test_database())
