@@ -204,5 +204,5 @@ def get_fee_query(currency, type):
                 }
             }
         """
-        %(currency, type)
+        % (currency, type)
     }

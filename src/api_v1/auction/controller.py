@@ -58,10 +58,7 @@ def get_keys(stock_id: UUID, eneba=Depends(EnebaClient)):
 
 
 @router.get("/fee")
-def get_fee(currency: str, type: str, 
-            eneba=Depends(EnebaClient)):
+def get_fee(currency: str, type: str, eneba=Depends(EnebaClient)):
     response = eneba.get_fee(currency, type)
 
-    return {
-        "response": response
-    }
+    return {"response": response}

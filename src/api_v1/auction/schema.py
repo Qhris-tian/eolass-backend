@@ -1,6 +1,6 @@
+from enum import Enum
 from typing import List, Optional, Union
 from uuid import UUID
-from enum import Enum
 
 from pydantic import BaseModel
 
@@ -31,6 +31,7 @@ class UpdateAuctionRequest(BaseModel):
     lowStockNotificationEnabled: bool = False
     priceChangeNotificationEnabled: bool = False
     declaredStock: Optional[int]
+
 
 class CountFeeTypeEnum(Enum):
     auction_new = "AUCTION_NEW"

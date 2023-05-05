@@ -132,7 +132,6 @@ class EnebaClient(BaseClient):
 
         data = dict(response.json())
         return data
-    
 
     def get_fee(self, currency, type):
         query = utils.get_fee_query(currency, type)
@@ -141,7 +140,6 @@ class EnebaClient(BaseClient):
 
         data = dict(response.json())
         return data
-
 
     def get_product(
         self,
