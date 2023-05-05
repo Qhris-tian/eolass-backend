@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from src.plugins.eneba import EnebaClient
 
-from .schema import CreateAuctionRequest, UpdateAuctionRequest, CountFeeTypeEnum
+from .schema import CreateAuctionRequest, UpdateAuctionRequest
 
 router = APIRouter()
 
