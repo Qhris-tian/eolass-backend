@@ -132,6 +132,16 @@ class EnebaClient(BaseClient):
 
         data = dict(response.json())
         return data
+    
+
+    def get_fee(self, currency, type):
+        query = utils.get_fee_query(currency, type)
+
+        response = self.post_json("graphql/", query)
+
+        data = dict(response.json())
+        return data
+
 
     def get_product(
         self,

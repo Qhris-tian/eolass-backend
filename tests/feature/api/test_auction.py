@@ -52,3 +52,10 @@ def test_get_keys(test_app):
     )
 
     assert "edges" in response.json()["response"]
+
+def test_get_fee(test_app):
+    response = test_app.get(
+        "/api/v1/auctions/fee?currency=EUR&type=AUCTION_NEW"
+    )
+
+    assert "data" in response.json()["response"]

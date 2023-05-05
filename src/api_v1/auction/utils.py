@@ -190,3 +190,19 @@ def get_keys_query(stock_id):
         """
         % (stock_id)
     }
+
+
+def get_fee_query(currency, type):
+    return {
+        "query": """
+            {
+                T_countFee(currency: "%s", type: %s) {
+                    fee {
+                    amount
+                    currency
+                    }
+                }
+            }
+        """
+        %(currency, type)
+    }

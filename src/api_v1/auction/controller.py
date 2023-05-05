@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from src.plugins.eneba import EnebaClient
 
-from .schema import CreateAuctionRequest, UpdateAuctionRequest
+from .schema import CreateAuctionRequest, UpdateAuctionRequest, CountFeeTypeEnum
 
 router = APIRouter()
 
@@ -55,3 +55,13 @@ def get_keys(stock_id: UUID, eneba=Depends(EnebaClient)):
     response = eneba.get_keys(stock_id)
 
     return {"response": response}
+
+
+@router.get("/fee")
+def get_fee(currency: str, type: str, 
+            eneba=Depends(EnebaClient)):
+    response = eneba.get_fee(currency, type)
+
+    return {
+        "response": response
+    }
