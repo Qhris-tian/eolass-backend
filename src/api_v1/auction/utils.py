@@ -173,11 +173,11 @@ def get_enable_declared_stock_query():
     }
 
 
-def get_keys_query(stock_id):
+def get_keys_query(stock_id, limit):
     return {
         "query": """
             {
-                S_keys(stockId: "%s") {
+                S_keys(stockId: "%s", first: %s) {
                     edges {
                     node {
                         id
@@ -188,5 +188,21 @@ def get_keys_query(stock_id):
                 }
             }
         """
-        % (stock_id)
+        % (stock_id, limit)
+    }
+
+
+def get_fee_query(currency, type):
+    return {
+        "query": """
+            {
+                T_countFee(currency: "%s", type: %s) {
+                    fee {
+                    amount
+                    currency
+                    }
+                }
+            }
+        """
+        % (currency, type)
     }
