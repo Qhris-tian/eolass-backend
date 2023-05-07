@@ -54,3 +54,8 @@ def test_get_update_auction_query():
 def test_get_enable_declared_stock_query():
     data = utils.get_enable_declared_stock_query()
     assert "query" in data
+
+
+def test_get_fee_query():
+    data = utils.get_fee_query(currency="EUR", type="AUCTION_NEW")
+    assert "query" in data

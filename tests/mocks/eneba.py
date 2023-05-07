@@ -79,7 +79,7 @@ class EnebaClient:
             }
         }
 
-    def get_keys(self, stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4"):
+    def get_keys(self, stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4", limit=2):
         return {
             "edges": [
                 {
@@ -98,6 +98,9 @@ class EnebaClient:
                 },
             ]
         }
+
+    def get_fee(self, currency="EUR", type="AUCTION_NEW"):
+        return {"data": {"T_countFee": {"fee": {"amount": 2, "currency": "EUR"}}}}
 
     def get_product(self, product_id: str):
         product = [
