@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse, RedirectResponse
 
+from src.api_v1.account.controller import router as account_router
 from src.api_v1.auction.controller import router as auction_router
 from src.api_v1.catalog.controller import router as catalog_router
 from src.api_v1.inventory.controller import router as inventory_router
@@ -16,6 +17,12 @@ api_router = APIRouter(
     default_response_class=JSONResponse, prefix="/api/{0}".format(settings.API_VERSION)
 )
 
+
+api_router.include_router(
+    account_router,
+    prefix="/account",
+    tags=["Account"],
+)
 
 api_router.include_router(
     product_router,
