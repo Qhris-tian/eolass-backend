@@ -48,8 +48,7 @@ async def create_order_inventory(order: Dict, cards, db):
         )
 
     cards_to_insert = [
-        CreateCardInDB(**{**card, "product": found_inventory["sku"], "available": True})
-        for card in cards
+        CreateCardInDB(**card, product=found_inventory["sku"]) for card in cards
     ]
 
     await db["cards"].insert_many(jsonable_encoder(cards_to_insert))

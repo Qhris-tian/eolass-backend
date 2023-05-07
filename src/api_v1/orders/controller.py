@@ -43,7 +43,7 @@ def get_order_history(
     start_date: datetime | None = None,
     end_date: datetime | None = None,
     limit: int = 10,
-    offset: int = 0,
+    offset: int = 1,
     ezpin=Depends(Ezpin),
     db=Depends(get_database),
 ):

@@ -8,13 +8,22 @@ from uuid import uuid4
 class Ezpin:
     """Mock http client to fake ezpin calls"""
 
+    def get_account_balance(self):
+        return balance
+
     def get_order_history(
-        self, start_date: datetime, end_date: datetime, limit: int = 10, offset: int = 0
+        self, start_date: datetime, end_date: datetime, limit: int = 10, offset: int = 1
     ):
+        total_count = 66
+        number_to_display = (
+            limit
+            if total_count - (limit * offset) + limit > limit
+            else total_count - (limit * offset) + limit
+        )
         return {
-            "count": limit,
-            "next": "",
-            "previous": "",
+            "count": total_count,
+            "next": "next",
+            "previous": "previous",
             "results": [
                 {
                     **dummy_order,
@@ -27,7 +36,7 @@ class Ezpin:
                         "title": dummy_product_names[random.randint(0, 4)],
                     },
                 }
-                for i in range(limit)
+                for i in range(number_to_display)
             ],
         }
 
@@ -119,3 +128,24 @@ dummy_order_card = {
     "claim_url": "https://vc.ezpaypin.com/9853476c-3b05-4871-a56f-9bb7eb33891d",
     "expire_date": "",
 }
+
+
+balance = [
+    {
+        "currency": {"currency": "Dollars", "symbol": "$", "code": "USD"},
+        "balance": 673.67,
+    },
+    {
+        "currency": {"currency": "Dollars", "symbol": "CAD$", "code": "CAD"},
+        "balance": 49.5,
+    },
+    {"currency": {"currency": "Euro", "symbol": "€", "code": "EUR"}, "balance": 4.71},
+    {
+        "currency": {"currency": "Pounds", "symbol": "£", "code": "GBP"},
+        "balance": 459.0,
+    },
+    {
+        "currency": {"currency": "TestService", "symbol": "EZ", "code": "EZ"},
+        "balance": 9090.74,
+    },
+]

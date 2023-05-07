@@ -134,10 +134,9 @@ def test_can_update_existing_inventory(test_app):
 
 
 def test_cannot_update_non_existing_inventory(test_app):
-    sku = random.randint(1001, 2009)
 
     response = test_app.put(
-        f"{base_endpoint}/{sku}", json={"sku": sku, "title": "Street"}
+        f"{base_endpoint}/{1}", json={"sku": 1, "title": "Street"}
     )
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
