@@ -125,8 +125,8 @@ class EnebaClient(BaseClient):
     #     data = dict(response.json())
     #     return data
 
-    def get_keys(self, stock_id):
-        query = utils.get_keys_query(stock_id)
+    def get_keys(self, stock_id, limit):
+        query = utils.get_keys_query(stock_id, limit)
 
         response = self.post_json("graphql/", query)
 

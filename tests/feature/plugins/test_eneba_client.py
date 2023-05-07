@@ -30,7 +30,7 @@ def test_update_auction(eneba=EnebaClient()):
 
 
 def test_get_keys(eneba=EnebaClient()):
-    response = eneba.get_keys(stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4")
+    response = eneba.get_keys(stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4", limit=2)
     assert "data" in response
 
 

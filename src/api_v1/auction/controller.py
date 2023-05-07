@@ -51,8 +51,8 @@ def update_auction(
 
 
 @router.get("/keys/{stock_id}")
-def get_keys(stock_id: UUID, eneba=Depends(EnebaClient)):
-    response = eneba.get_keys(stock_id)
+def get_keys(stock_id: UUID, limit: int, eneba=Depends(EnebaClient)):
+    response = eneba.get_keys(stock_id, limit)
 
     return {"response": response}
 

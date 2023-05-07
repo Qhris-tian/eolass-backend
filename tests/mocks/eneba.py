@@ -79,7 +79,7 @@ class EnebaClient:
             }
         }
 
-    def get_keys(self, stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4"):
+    def get_keys(self, stock_id="61077c78-e5ff-11ed-8cac-c2d0bec86bc4", limit=2):
         return {
             "edges": [
                 {
