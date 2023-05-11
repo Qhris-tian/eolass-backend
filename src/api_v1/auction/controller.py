@@ -18,11 +18,11 @@ def get_auctions(page: int = 1, limit: int = 10, eneba=Depends(EnebaClient)):
 
 @router.post("/")
 def create_auction(
-    auctionData: CreateAuctionRequest, type: str, eneba=Depends(EnebaClient)
+    auction_data: CreateAuctionRequest, type: str, eneba=Depends(EnebaClient)
 ):
-    auctionData.enabled = "true" if auctionData.enabled is True else "false"
-    auctionData.autoRenew = "true" if auctionData.autoRenew is True else "false"
-    response = eneba.create_auction(auctionData, type)
+    auction_data.enabled = "true" if auction_data.enabled is True else "false"
+    auction_data.autoRenew = "true" if auction_data.autoRenew is True else "false"
+    response = eneba.create_auction(auction_data, type)
 
     return {"response": response}
 
@@ -30,11 +30,13 @@ def create_auction(
 @router.put("/{stock_id}")
 def update_auction(
     stock_id: UUID,
-    updateData: UpdateAuctionRequest,
+    update_data: UpdateAuctionRequest,
     type: str,
     eneba=Depends(EnebaClient),
 ):
-    response = eneba.update_auction(updateData, type)
+    update_data.enabled = "true" if update_data.enabled is True else "false"
+    update_data.autoRenew = "true" if update_data.autoRenew is True else "false"
+    response = eneba.update_auction(update_data, type)
 
     return {"response": response}
 
