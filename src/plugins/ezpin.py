@@ -20,10 +20,21 @@ class Ezpin(BaseClient):  # pragma: no cover
         self.timeout = 60
         super().__init__(settings.EZPIN_BASE_URI, token=token)
 
+    def get_account_balance(self):
+        return self.get("balance/")
+
     def get_order_history(
         self, start_date: datetime, end_date: datetime, limit: int = 10, offset: int = 0
     ):
-        return self.get("orders/")
+        return self.get(
+            "orders/",
+            {
+                "start_date": start_date,
+                "end_date": end_date,
+                "limit": limit,
+                "offset": offset,
+            },
+        )
 
     def get_order(self, reference_code):
         return self.get(f"orders/{reference_code}")

@@ -40,6 +40,7 @@ class CreateCardInDB(ModelMixin):
     claim_url: Optional[str]
     expire_date: Optional[datetime | str]
     product: int
+    available: bool = True
 
 
 class CreateInventoryCardRequest(BaseModel):
