@@ -10,7 +10,7 @@ def test_search_product(eneba=EnebaClient()):
 
 
 def test_get_auctions(eneba=EnebaClient()):
-    response = eneba.get_auctions(limit=1)
+    response = eneba.get_auctions(limit=1, page=None)
     assert "edges" in response
 
 

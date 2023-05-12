@@ -62,12 +62,20 @@ class EnebaClient(BaseClient):
 
         return data["S_products"]
 
-    def get_auctions(self, limit):
+    def get_auctions(self, limit, page):
         query = {
             "query": """query {
             S_stock(
                 first: %s
+                after: "%s"
             ) {
+                totalCount
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                    endCursor
+                }
                 edges{
                     node {
                         id
@@ -88,7 +96,7 @@ class EnebaClient(BaseClient):
             }
         }
         """
-            % (limit)
+            % (limit, page)
         }
         response = self.post_json("graphql/", query)
 

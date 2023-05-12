@@ -26,7 +26,7 @@ class EnebaClient:
             }
         ] * count
 
-    def get_auctions(self, limit: int = 1):
+    def get_auctions(self, limit: int = 1, page: str = None):
         return {
             "edges": [
                 {

@@ -24,7 +24,7 @@ class UpdateAuctionMock:
     acquisitionPrice: Optional[Price]
     removedKeys: Optional[List[str]] = []
     enabled: Optional[bool] = False
-    autoRenew: Optional[bool] = False
+    autoRenew: Optional[bool] = "false"
     lowStockNotificationEnabled: Optional[bool] = False
     priceChangeNotificationEnabled: Optional[bool] = False
     declaredStock: Optional[int] = 0
