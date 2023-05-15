@@ -47,3 +47,7 @@ def test_invalid_get_product(eneba=EnebaClient()):
 def test_get_fee(eneba=EnebaClient()):
     response = eneba.get_fee(currency="EUR", type="AUCTION_NEW")
     assert "data" in response
+
+def test_get_transactions(eneba=EnebaClient()):
+    response = eneba.get_transactions(type="SALE")
+    assert "data" in response

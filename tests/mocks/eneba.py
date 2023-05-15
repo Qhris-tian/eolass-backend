@@ -101,6 +101,25 @@ class EnebaClient:
 
     def get_fee(self, currency="EUR", type="AUCTION_NEW"):
         return {"data": {"T_countFee": {"fee": {"amount": 2, "currency": "EUR"}}}}
+    
+    
+    def get_transactions(self, type):
+        return {
+            "response": {
+                "data": {
+                    "B_transactions": {
+                        "totalCount": 0,
+                        "pageInfo": {
+                        "hasNextPage": "false",
+                        "hasPreviousPage": "false",
+                        "startCursor": None,
+                        "endCursor": None
+                        },
+                        "edges": []
+                    }
+                }
+            }
+        }
 
     def get_product(self, product_id: str):
         product = [
