@@ -40,7 +40,7 @@ class Ezpin(BaseClient):  # pragma: no cover
         return self.get(f"orders/{reference_code}/").json()
 
     def get_order_cards(self, reference_code: UUID):
-        return self.get(f"orders/{reference_code}/cards").json()
+        return self.get(f"orders/{reference_code}/cards/").json()
 
     def create_order(self, data: Dict):
         return self.post_json(
