@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-# from src.plugins.ezpin import Ezpin
-from tests.mocks.ezpin import Ezpin
+from src.plugins.ezpin import Ezpin
 
 from .schema import CatalogAvailabilityResponse, CatalogListResponse
 
@@ -23,7 +22,7 @@ def check_catalog_availability(
     id: str, price: float, quantity: int, ezpin=Depends(Ezpin)
 ):
     if price > 0 and quantity > 0:
-        return ezpin.catalog_availability(id, {"quantity": quantity, "price": price})
+        return ezpin.catalog_availability(id, {"item_count": quantity, "price": price})
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

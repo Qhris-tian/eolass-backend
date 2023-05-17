@@ -58,5 +58,5 @@ class CatalogAvailabilityRequest(BaseModel):
 
 
 class CatalogAvailabilityResponse(BaseModel):
-    availability: bool
+    availability: Optional[bool]
     detail: str

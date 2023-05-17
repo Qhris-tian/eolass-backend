@@ -5,13 +5,13 @@ from fastapi.encoders import jsonable_encoder
 from .schema import CreateCardInDB, CreateInventoryInDB, UpdateInventoryInDB
 
 
-async def find_inventory(limit: int, db):
-    data = await db["inventory"].find().to_list(10)
+async def find_inventory(db, limit: int = 10):
+    data = await db["inventory"].find().to_list(limit)
     return data
 
 
 async def find_product_cards(product: int, db):
-    data = await db["cards"].find({"product": product}).to_list(10)
+    data = await db["cards"].find({"product": product, "available": True}).to_list(10)
     return data
 
 

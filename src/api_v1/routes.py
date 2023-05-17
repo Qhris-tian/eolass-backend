@@ -3,6 +3,7 @@ from starlette.responses import JSONResponse, RedirectResponse
 
 from src.api_v1.account.controller import router as account_router
 from src.api_v1.auction.controller import router as auction_router
+from src.api_v1.card.controller import router as card_router
 from src.api_v1.catalog.controller import router as catalog_router
 from src.api_v1.inventory.controller import router as inventory_router
 from src.api_v1.orders.controller import router as order_router
@@ -47,6 +48,12 @@ api_router.include_router(
     inventory_router,
     prefix="/inventory",
     tags=["Inventory"],
+)
+
+api_router.include_router(
+    card_router,
+    prefix="/cards",
+    tags=["Card"],
 )
 
 api_router.include_router(

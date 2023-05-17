@@ -2,7 +2,9 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends
 
+from src.database import get_database
 from src.plugins.eneba import EnebaClient
+from src.api_v1.card.crud import mark_cards_as_unavialable
 
 from .schema import CreateAuctionRequest, UpdateAuctionRequest
 
@@ -17,12 +19,17 @@ def get_auctions(page: str = None, limit: int = 10, eneba=Depends(EnebaClient)):
 
 
 @router.post("/")
-def create_auction(
-    auction_data: CreateAuctionRequest, type: str, eneba=Depends(EnebaClient)
+async def create_auction(
+    auction_data: CreateAuctionRequest,
+    type: str,
+    eneba=Depends(EnebaClient),
+    db=Depends(get_database),
 ):
     auction_data.enabled = "true" if auction_data.enabled is True else "false"
     auction_data.autoRenew = "true" if auction_data.autoRenew is True else "false"
     response = eneba.create_auction(auction_data, type)
+
+    await mark_cards_as_unavialable(cards=auction_data.keys, db=db)
 
     return {"response": response}
 

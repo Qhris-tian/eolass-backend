@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from typing import Dict, List
 from urllib.parse import urlencode
 from uuid import uuid4
@@ -33,7 +33,7 @@ def test_can_get_order_history_without_params(test_app):
 
 
 def test_can_get_order_history_with_only_start_date(test_app):
-    params = urlencode({"start_date": datetime.now()})
+    params = urlencode({"start_date": date.today()})
     response = test_app.get(f"{base_endpoint}/?{params}")
 
     assert isinstance(response.json(), Dict)
@@ -43,7 +43,7 @@ def test_can_get_order_history_with_only_start_date(test_app):
 
 
 def test_can_get_order_history_with_only_end_date(test_app):
-    params = urlencode({"end_date": datetime.now()})
+    params = urlencode({"end_date": date.today()})
 
     response = test_app.get(f"{base_endpoint}/?{params}")
 

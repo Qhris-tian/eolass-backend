@@ -13,7 +13,7 @@ class Price(BaseModel):
 class CreateAuctionRequest(BaseModel):
     productId: UUID
     enabled: Union[bool, str]
-    keys: Optional[List[str]]
+    keys: List[str]
     autoRenew: Union[bool, str]
     price: Price
     onHand: Optional[int]

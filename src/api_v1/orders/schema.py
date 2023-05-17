@@ -15,12 +15,12 @@ class Product(BaseModel):
 
 class Order(BaseModel):
     order_id: int
-    delivery_type: int
-    destination: str
+    delivery_type: Optional[int]
+    destination: Optional[str]
     status: int
     status_text: str
     created_time: datetime
-    terminal_id: int
+    terminal_id: Optional[int]
     product: Product
     count: int
     total_face_value: int
@@ -29,7 +29,7 @@ class Order(BaseModel):
     reference_code: Optional[str]
     total_customer_cost: float
     is_completed: bool
-    share_link: str
+    share_link: Optional[str]
 
 
 class OrderHistory(BaseModel):
