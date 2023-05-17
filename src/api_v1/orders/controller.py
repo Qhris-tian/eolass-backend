@@ -96,8 +96,8 @@ async def refresh_order(
 
 
 @router.get("/{reference_code}/cards", summary="Get Order cards.")
-def get_order_cards():  # pragma: no cover
-    pass
+def get_order_cards(reference_code: UUID, ezpin=Depends(Ezpin)):  # pragma: no cover
+    return ezpin.get_order_cards(reference_code)
 
 
 @router.get("/events", summary="Process order event from ezpin.")
