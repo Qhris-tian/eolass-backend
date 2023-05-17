@@ -1,5 +1,5 @@
 from typing import Optional
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from uuid import UUID
 
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
@@ -10,7 +10,7 @@ from src.plugins.ezpin import Ezpin
 
 from .crud import create_new_order, find_one_order_by, find_orders
 from .schema import CreateOrderRequest, Order, OrderHistory, StatusEnum
-from .utils import get_month_date, refresh_local_orders, synchronize_order
+from .utils import refresh_local_orders, synchronize_order
 
 router = APIRouter()
 
