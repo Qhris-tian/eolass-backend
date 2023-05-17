@@ -6,8 +6,7 @@ from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, st
 
 from src.database import get_database
 
-# from src.plugins.ezpin import Ezpin
-from tests.mocks.ezpin import Ezpin
+from src.plugins.ezpin import Ezpin
 
 from .crud import create_new_order, find_one_order_by, find_orders
 from .schema import CreateOrderRequest, Order, OrderHistory, StatusEnum
