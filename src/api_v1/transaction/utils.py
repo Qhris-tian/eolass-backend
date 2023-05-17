@@ -1,6 +1,3 @@
-from .schema import TransactionTypeEnum
-
-
 def get_transaction_query(type):
     return {
         "query": """
@@ -37,5 +34,5 @@ def get_transaction_query(type):
                 }
             }
         """
-        %(type)
+        % (type)
     }

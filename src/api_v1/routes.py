@@ -68,6 +68,7 @@ api_router.include_router(
     tags=["Transactions"],
 )
 
+
 @api_router.get("/health-check", include_in_schema=False)
 def healthcheck():
     return {"status": "ok"}

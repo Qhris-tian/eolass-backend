@@ -101,8 +101,7 @@ class EnebaClient:
 
     def get_fee(self, currency="EUR", type="AUCTION_NEW"):
         return {"data": {"T_countFee": {"fee": {"amount": 2, "currency": "EUR"}}}}
-    
-    
+
     def get_transactions(self, type):
         return {
             "response": {
@@ -110,12 +109,12 @@ class EnebaClient:
                     "B_transactions": {
                         "totalCount": 0,
                         "pageInfo": {
-                        "hasNextPage": "false",
-                        "hasPreviousPage": "false",
-                        "startCursor": None,
-                        "endCursor": None
+                            "hasNextPage": "false",
+                            "hasPreviousPage": "false",
+                            "startCursor": None,
+                            "endCursor": None,
                         },
-                        "edges": []
+                        "edges": [],
                     }
                 }
             }

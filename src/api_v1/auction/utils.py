@@ -116,7 +116,7 @@ def get_update_auction_plain(body: UpdateAuctionRequest):
             json.dumps(body.removedKeys),
             body.price.amount,
             body.price.currency,
-            body.autoRenew
+            body.autoRenew,
         )
     }
 

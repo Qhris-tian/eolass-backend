@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class TransactionTypeEnum(Enum):
     sale = "SALE"
     deposit = "DEPOSIT"
