@@ -1,16 +1,16 @@
-from datetime import datetime
+from typing import Optional
+from datetime import date, timedelta
 from uuid import UUID
 
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
 
 from src.database import get_database
 
-# from src.plugins.ezpin import Ezpin
-from tests.mocks.ezpin import Ezpin
+from src.plugins.ezpin import Ezpin
 
 from .crud import create_new_order, find_one_order_by, find_orders
 from .schema import CreateOrderRequest, Order, OrderHistory, StatusEnum
-from .utils import get_month_date, refresh_local_orders, synchronize_order
+from .utils import refresh_local_orders, synchronize_order
 
 router = APIRouter()
 
@@ -40,8 +40,8 @@ async def create_order(
 @router.get("/", summary="Get order history.", response_model=OrderHistory)
 def get_order_history(
     background_tasks: BackgroundTasks,
-    start_date: datetime | None = None,
-    end_date: datetime | None = None,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None,
     limit: int = 10,
     offset: int = 1,
     ezpin=Depends(Ezpin),
@@ -49,9 +49,9 @@ def get_order_history(
 ):
     """Get order history."""
     if start_date is None:
-        start_date = datetime.now()
+        start_date = (date.today() - timedelta(days=5))
     if end_date is None:
-        end_date = get_month_date(datetime.now(), -1)  # Get last month datetime
+        end_date = date.today()
 
     history = ezpin.get_order_history(
         start_date=start_date, end_date=end_date, limit=limit, offset=offset
@@ -70,7 +70,7 @@ async def get_local_orders(db=Depends(get_database)):
 
 
 @router.get("/{reference_code}", summary="Get order details.")
-def get_order(reference_code: UUID, ezpin=Depends(Ezpin)):
+def get_order(reference_code: str, ezpin=Depends(Ezpin)):
     """Get order details."""
     return ezpin.get_order(reference_code)
 
@@ -95,9 +95,9 @@ async def refresh_order(
     return {"message": "Order has already been completed."}
 
 
-@router.get("/{reference_code}", summary="Get Order cards.")
-def get_order_cards():  # pragma: no cover
-    pass
+@router.get("/{reference_code}/cards", summary="Get Order cards.")
+def get_order_cards(reference_code: UUID, ezpin=Depends(Ezpin)):  # pragma: no cover
+    return ezpin.get_order_cards(reference_code)
 
 
 @router.get("/events", summary="Process order event from ezpin.")

@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
-# from src.plugins.ezpin import Ezpin
-from tests.mocks.ezpin import Ezpin
+from src.plugins.ezpin import Ezpin
 
 from .schema import AccountBalanceResponse
 
