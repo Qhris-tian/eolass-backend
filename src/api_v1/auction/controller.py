@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get("/")
-def get_auctions(page: str = None, limit: int = 10, eneba=Depends(EnebaClient)):
+def get_auctions(page: str = '', limit: int = 10, eneba=Depends(EnebaClient)):
     data = eneba.get_auctions(limit, page)
 
     return {"auctions": data}
