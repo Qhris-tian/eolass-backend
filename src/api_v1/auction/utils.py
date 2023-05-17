@@ -102,6 +102,7 @@ def get_update_auction_plain(body: UpdateAuctionRequest):
                 addedKeys: %s
                 removedKeys: %s
                 price: { amount: %s, currency: "%s" }
+                autoRenew: %s
                 }
             ) {
                 isSuccessful
@@ -115,6 +116,7 @@ def get_update_auction_plain(body: UpdateAuctionRequest):
             json.dumps(body.removedKeys),
             body.price.amount,
             body.price.currency,
+            body.autoRenew,
         )
     }
 
@@ -127,6 +129,7 @@ def get_update_auction_declared_stock(body: UpdateAuctionRequest):
                 input: {
                 id: "%s"
                 declaredStock: %s
+                autoRenew: %s
                 }
             ) {
                 isSuccessful
@@ -134,7 +137,7 @@ def get_update_auction_declared_stock(body: UpdateAuctionRequest):
             }
             }
         """
-        % (body.id, body.declaredStock)
+        % (body.id, body.declaredStock, body.autoRenew)
     }
 
 

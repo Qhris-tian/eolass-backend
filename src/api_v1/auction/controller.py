@@ -2,9 +2,9 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends
 
+from src.api_v1.card.crud import mark_cards_as_unavialable
 from src.database import get_database
 from src.plugins.eneba import EnebaClient
-from src.api_v1.card.crud import mark_cards_as_unavialable
 
 from .schema import CreateAuctionRequest, UpdateAuctionRequest
 
@@ -12,8 +12,8 @@ router = APIRouter()
 
 
 @router.get("/")
-def get_auctions(page: int = 1, limit: int = 10, eneba=Depends(EnebaClient)):
-    data = eneba.get_auctions(limit)
+def get_auctions(page: str = "", limit: int = 10, eneba=Depends(EnebaClient)):
+    data = eneba.get_auctions(limit, page)
 
     return {"auctions": data}
 
@@ -41,6 +41,8 @@ def update_auction(
     type: str,
     eneba=Depends(EnebaClient),
 ):
+    update_data.enabled = "true" if update_data.enabled is True else "false"
+    update_data.autoRenew = "true" if update_data.autoRenew is True else "false"
     response = eneba.update_auction(update_data, type)
 
     return {"response": response}

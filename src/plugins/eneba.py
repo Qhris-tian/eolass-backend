@@ -4,6 +4,7 @@ import requests
 
 from src.api_v1.auction import utils
 from src.api_v1.auction.schema import CreateAuctionRequest, UpdateAuctionRequest
+from src.api_v1.transaction import utils as transaction_utils
 from src.config import get_settings
 from src.decorators import timed_lru_cache
 from src.plugins.base_client import BaseClient
@@ -62,12 +63,20 @@ class EnebaClient(BaseClient):
 
         return data["S_products"]
 
-    def get_auctions(self, limit):
+    def get_auctions(self, limit, page):
         query = {
             "query": """query {
             S_stock(
                 first: %s
+                after: "%s"
             ) {
+                totalCount
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                    endCursor
+                }
                 edges{
                     node {
                         id
@@ -88,7 +97,7 @@ class EnebaClient(BaseClient):
             }
         }
         """
-            % (limit)
+            % (limit, page)
         }
         response = self.post_json("graphql/", query)
 
@@ -135,6 +144,14 @@ class EnebaClient(BaseClient):
 
     def get_fee(self, currency, type):
         query = utils.get_fee_query(currency, type)
+
+        response = self.post_json("graphql/", query)
+
+        data = dict(response.json())
+        return data
+
+    def get_transactions(self, type):
+        query = transaction_utils.get_transaction_query(type)
 
         response = self.post_json("graphql/", query)
 

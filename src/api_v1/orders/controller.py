@@ -1,11 +1,10 @@
-from typing import Optional
 from datetime import date, timedelta
+from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
 
 from src.database import get_database
-
 from src.plugins.ezpin import Ezpin
 
 from .crud import create_new_order, find_one_order_by, find_orders
@@ -49,7 +48,7 @@ def get_order_history(
 ):
     """Get order history."""
     if start_date is None:
-        start_date = (date.today() - timedelta(days=5))
+        start_date = date.today() - timedelta(days=5)
     if end_date is None:
         end_date = date.today()
 
