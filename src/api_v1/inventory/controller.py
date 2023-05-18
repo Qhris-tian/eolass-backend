@@ -17,7 +17,7 @@ router = APIRouter()
 
 
 @router.get("/", summary="Get products in inventory.")
-async def get_inventory(limit=10, db=Depends(get_database)):
+async def get_inventory(limit: int = 10, db=Depends(get_database)):
     """Get products in inventory."""
     inventory = await find_inventory(limit=limit, db=db)
 
