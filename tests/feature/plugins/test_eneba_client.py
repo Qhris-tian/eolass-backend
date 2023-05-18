@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from src.plugins.eneba import EnebaClient
+from src.api_v1.transaction.schema import TransactionTypeEnum
 from tests.mocks.schema import CreateAuctionMock, UpdateAuctionMock
 
 
@@ -50,5 +51,5 @@ def test_get_fee(eneba=EnebaClient()):
 
 
 def test_get_transactions(eneba=EnebaClient()):
-    response = eneba.get_transactions(type="SALE")
+    response = eneba.get_transactions(type= TransactionTypeEnum.sale)
     assert "data" in response
