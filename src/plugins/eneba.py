@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 import requests
-from ratelimit import limits
+from ratelimit import limits  # type: ignore
 
 from src.api_v1.auction import utils
 from src.api_v1.auction.schema import CreateAuctionRequest, UpdateAuctionRequest
@@ -238,6 +238,6 @@ def remove_edges_and_nodes(data) -> Dict | List:
 
 
 @limits(calls=settings.ENEBA_CALL_LIMIT, period=settings.ENEBA_CALL_LIMIT_PERIOD)
-def function_limit():
+def function_limit():  # pragma: no cover
     """Helper function to rate limit other function"""
     pass

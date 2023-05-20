@@ -47,7 +47,7 @@ class Ezpin:
         return [dummy_order_card]
 
     def create_order(self, data: Dict):
-        return {**dummy_order, "reference_code": data["reference_code"]}
+        return 200, {"detail": "you do not have sufficient balance."}
 
     def catalog_list(self):
         return {

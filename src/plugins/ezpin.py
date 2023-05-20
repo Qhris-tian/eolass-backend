@@ -52,7 +52,7 @@ class Ezpin(BaseClient):  # pragma: no cover
                 "pre_order": data["pre_order"],
                 "reference_code": data["reference_code"],
                 "destination_type": settings.ORDER_DESTINATION_TYPE,
-                "destination": settings.ORDER_DESTINATION
+                "destination": settings.ORDER_DESTINATION,
             },
         )
 

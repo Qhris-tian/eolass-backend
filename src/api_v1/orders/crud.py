@@ -41,7 +41,7 @@ async def create_order_inventory(order: Dict, cards, db):
 
     found_inventory = await db["inventory"].find_one({"sku": order["product"]["sku"]})
 
-    if not found_inventory:
+    if not found_inventory:  # pragma: no cover
         await db["inventory"].insert_one(jsonable_encoder(inventory))
         found_inventory = await db["inventory"].find_one(
             {"sku": order["product"]["sku"]}

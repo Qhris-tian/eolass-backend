@@ -73,13 +73,16 @@ def test_cannot_refresh_non_existing_order(test_app):
 
 
 def test_can_refresh_existing_order(test_app):
-    response = test_app.post(
+    create_response = test_app.post(
         base_endpoint,
         json={"product_id": 12, "quantity": 12, "price": 2.3, "pre_order": False},
     )
-    assert response.status_code == status.HTTP_201_CREATED
+    assert create_response.status_code == status.HTTP_201_CREATED
 
-    created_order = response.json()
+    get_response = test_app.get(f"{base_endpoint}/local")
+    assert get_response.status_code == status.HTTP_200_OK
+
+    created_order = get_response.json()[0]
 
     response = test_app.get(
         "{}/{}/refresh".format(base_endpoint, created_order["reference_code"])
@@ -94,7 +97,10 @@ def test_cannot_refresh_existing_completed_order(test_app):
     )
     assert response.status_code == status.HTTP_201_CREATED
 
-    created_order = response.json()
+    get_response = test_app.get(f"{base_endpoint}/local")
+    assert get_response.status_code == status.HTTP_200_OK
+
+    created_order = get_response.json()[0]
 
     response = test_app.get(
         "{}/{}/refresh".format(base_endpoint, created_order["reference_code"])
