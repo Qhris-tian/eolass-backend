@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     EZPIN_BASE_URI: str = ""
     EZPIN_ID: str = ""
     EZPIN_SECRET: str = ""
+    ORDER_DESTINATION_TYPE: str = "email"
+    ORDER_DESTINATION: str = "provide.valid@email.com"
+    ENEBA_CALL_LIMIT: int = 1999
+    ENEBA_CALL_LIMIT_PERIOD: int = 599
 
     class Config:
         env_file = ".env"
@@ -30,6 +34,13 @@ class Settings(BaseSettings):
     @classmethod
     def get_ezpin_base_uri(cls, value: str, values) -> str:
         return "{}/{}".format(value, values["EZPIN_VERSION"])
+
+    @validator("ENEBA_CALL_LIMIT")
+    @classmethod
+    def get_eneba_call_limit(cls, value: int, values) -> int:
+        if value > 1999:  # pragma: no cover
+            return 1999
+        return value
 
 
 @lru_cache()

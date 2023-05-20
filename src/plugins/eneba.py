@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 import requests
+from ratelimit import limits  # type: ignore
 
 from src.api_v1.auction import utils
 from src.api_v1.auction.schema import CreateAuctionRequest, UpdateAuctionRequest
@@ -23,6 +24,7 @@ class EnebaClient(BaseClient):
         super().__init__(settings.ENEBA_BASE_URI, token=token)
 
     def search(self, product_name: str, count: int = 5):
+        function_limit()
         response = self.post_json(
             "graphql/",
             {
@@ -64,6 +66,7 @@ class EnebaClient(BaseClient):
         return data["S_products"]
 
     def get_auctions(self, limit, page):
+        function_limit()
         query = {
             "query": """query {
             S_stock(
@@ -106,6 +109,7 @@ class EnebaClient(BaseClient):
         return data["S_stock"]
 
     def create_auction(self, body: CreateAuctionRequest, type):
+        function_limit()
         query = utils.get_create_auction_query(body, type)
 
         response = self.post_json("graphql/", query)
@@ -114,6 +118,7 @@ class EnebaClient(BaseClient):
         return data
 
     def update_auction(self, body: UpdateAuctionRequest, type):
+        function_limit()
         query = utils.get_update_auction_query(body, type)
 
         response = self.post_json("graphql/", query)
@@ -135,6 +140,7 @@ class EnebaClient(BaseClient):
     #     return data
 
     def get_keys(self, stock_id, limit):
+        function_limit()
         query = utils.get_keys_query(stock_id, limit)
 
         response = self.post_json("graphql/", query)
@@ -143,6 +149,7 @@ class EnebaClient(BaseClient):
         return data
 
     def get_fee(self, currency, type):
+        function_limit()
         query = utils.get_fee_query(currency, type)
 
         response = self.post_json("graphql/", query)
@@ -151,6 +158,7 @@ class EnebaClient(BaseClient):
         return data
 
     def get_transactions(self, type):
+        function_limit()
         query = transaction_utils.get_transaction_query(type)
 
         response = self.post_json("graphql/", query)
@@ -162,6 +170,7 @@ class EnebaClient(BaseClient):
         self,
         product_id: str,
     ):
+        function_limit()
         response = self.post_json(
             "graphql/",
             {
@@ -226,3 +235,9 @@ def remove_edges_and_nodes(data) -> Dict | List:
             return {key: remove_edges_and_nodes(value) for key, value in data.items()}
     else:
         return data
+
+
+@limits(calls=settings.ENEBA_CALL_LIMIT, period=settings.ENEBA_CALL_LIMIT_PERIOD)
+def function_limit():  # pragma: no cover
+    """Helper function to rate limit other function"""
+    pass

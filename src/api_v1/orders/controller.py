@@ -8,7 +8,7 @@ from src.database import get_database
 from src.plugins.ezpin import Ezpin
 
 from .crud import create_new_order, find_one_order_by, find_orders
-from .schema import CreateOrderRequest, Order, OrderHistory, StatusEnum
+from .schema import CreateOrderRequest, OrderHistory, StatusEnum
 from .utils import refresh_local_orders, synchronize_order
 
 router = APIRouter()
@@ -17,7 +17,6 @@ router = APIRouter()
 @router.post(
     "/",
     summary="Create an order.",
-    response_model=Order,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_order(
@@ -29,7 +28,15 @@ async def create_order(
     if request.price > 0 and request.quantity > 0:
         created_order = await create_new_order(request.dict(), db=db)
 
-        return ezpin.create_order(created_order)
+        status_code, response_json = ezpin.create_order(created_order)
+
+        if status_code == status.HTTP_200_OK or status_code == status.HTTP_201_CREATED:
+            return response_json
+
+        raise HTTPException(  # pragma: nocover
+            status_code=status_code,
+            detail=response_json,
+        )
     raise HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,
         detail="Price and quantity must be greater than zero",
@@ -99,8 +106,10 @@ def get_order_cards(reference_code: UUID, ezpin=Depends(Ezpin)):  # pragma: no c
     return ezpin.get_order_cards(reference_code)
 
 
-@router.get("/events", summary="Process order event from ezpin.")
-def order_event():  # pragma: no cover
+@router.post("/events", summary="Process order event from ezpin.")
+def order_event(request=Body()):  # pragma: no cover
     """Process order event from ezpin."""
     # consume ezpin order events
-    pass
+    print(request)
+
+    return {"message": "Order event received successfully."}

@@ -17,6 +17,8 @@ def get_settings_override() -> Settings:
     return Settings(
         DATABASE_NAME="test",
         ENVIRONMENT="test",
+        ENEBA_CALL_LIMIT=1,
+        ENEBA_CALL_LIMIT_PERIOD=1,
     )
 
 
