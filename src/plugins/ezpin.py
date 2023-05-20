@@ -43,7 +43,7 @@ class Ezpin(BaseClient):  # pragma: no cover
         return self.get(f"orders/{reference_code}/cards/").json()
 
     def create_order(self, data: Dict):
-        return self.post_json(
+        response = self.post_json(
             "orders/",
             data={
                 "sku": data["product_id"],
@@ -55,6 +55,7 @@ class Ezpin(BaseClient):  # pragma: no cover
                 "destination": settings.ORDER_DESTINATION,
             },
         )
+        return response.status_code, response.json()
 
     def catalog_list(self):
         return self.get("catalogs/").json()
