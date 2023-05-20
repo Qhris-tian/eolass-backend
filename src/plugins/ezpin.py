@@ -46,11 +46,15 @@ class Ezpin(BaseClient):  # pragma: no cover
         return self.post_json(
             "orders/",
             data={
-                "product_id": data["product_id"],
-                "item_count": data["quantity"],
+                "sku": data["product_id"],
+                "quantity": data["quantity"],
                 "price": data["price"],
+                "pre_order": data["pre_order"],
+                "reference_code": data["reference_code"],
+                "destination_type": settings.ORDER_DESTINATION_TYPE,
+                "destination": settings.ORDER_DESTINATION
             },
-        ).json()
+        )
 
     def catalog_list(self):
         return self.get("catalogs/").json()

@@ -48,7 +48,7 @@ class CreateOrderRequest(BaseModel):
     product_id: int
     quantity: int
     price: float
-    pre_order: bool
+    pre_order: bool = Field(default=False)
 
 
 class CreateOrderInDB(CreateOrderRequest, ModelMixin):
