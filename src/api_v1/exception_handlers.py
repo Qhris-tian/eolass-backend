@@ -2,9 +2,9 @@ from typing import Dict
 
 from fastapi import HTTPException, status
 from fastapi.exceptions import RequestValidationError
+from ratelimit.exception import RateLimitException  # type: ignore
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-from ratelimit.exception import RateLimitException
 
 
 async def http_exception_handler(
@@ -35,10 +35,10 @@ async def request_error_handler(
     )
 
 
-async def  rate_limit_error_handler(
+async def rate_limit_error_handler(
     request: Request,
     exception: RateLimitException,
-):
+):  # pragma: no cover
     return JSONResponse(
         content={
             "errors": "Too many request try after again later.",

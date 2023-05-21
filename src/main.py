@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from ratelimit.exception import RateLimitException  # type: ignore
 from starlette.exceptions import HTTPException
 from starlette.middleware.cors import CORSMiddleware
-from ratelimit.exception import RateLimitException
 
 from src.api_v1.exception_handlers import (
     http_exception_handler,
