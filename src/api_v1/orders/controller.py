@@ -4,6 +4,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
 
+from src.api_v1.preference.utils import get_order_limit
 from src.database import get_database
 from src.plugins.ezpin import Ezpin
 
@@ -26,6 +27,15 @@ async def create_order(
 ):
     """Create order for a product."""
     if request.price > 0 and request.quantity > 0:
+        limit_reached, limit = await get_order_limit(
+            db, (request.price * request.quantity)
+        )
+        if limit_reached:
+            raise HTTPException(  # pragma: no cover
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Your order {(request.price * request.quantity)} exceeds your {limit['interval']} limit of {limit['value']}",
+            )
+
         created_order = await create_new_order(request.dict(), db=db)
 
         status_code, response_json = ezpin.create_order(created_order)
@@ -33,7 +43,7 @@ async def create_order(
         if status_code == status.HTTP_200_OK or status_code == status.HTTP_201_CREATED:
             return response_json
 
-        raise HTTPException(  # pragma: nocover
+        raise HTTPException(  # pragma: no cover
             status_code=status_code,
             detail=response_json,
         )
