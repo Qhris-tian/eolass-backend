@@ -1,6 +1,3 @@
-import random
-from typing import Dict, List
-
 from fastapi import status
 
 base_endpoint = "/api/v1/preferences"

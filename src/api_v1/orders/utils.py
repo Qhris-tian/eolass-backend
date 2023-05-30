@@ -14,8 +14,10 @@ def get_month_date(date: datetime, delta: int) -> datetime:
 
 
 async def refresh_local_orders(order_list: List, db, ezpin) -> None:
+    reference_list = [ order["reference_code"] for order in order_list]
+
     found_orders = await find_pending_orders_in(
-        key="reference_code", values=order_list, db=db
+        key="reference_code", values=reference_list, db=db
     )
 
     if len(found_orders) == 0:
@@ -30,7 +32,7 @@ async def synchronize_order(order, db, ezpin) -> Dict:
 
     if order_ezpin["is_completed"] and order_ezpin["status"] == 1:
         cards = ezpin.get_order_cards(order["reference_code"])
-        await create_order_inventory(order_ezpin, cards, db)
+        await create_order_inventory(order_ezpin, cards["results"], db)
 
         await mark_order_as_complete(order["reference_code"], db)
 

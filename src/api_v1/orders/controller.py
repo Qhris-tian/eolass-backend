@@ -65,15 +65,17 @@ def get_order_history(
 ):
     """Get order history."""
     if start_date is None:
-        start_date = date.today() - timedelta(days=5)
+        start_date = date.today() - timedelta(days=1)
     if end_date is None:
-        end_date = date.today()
+        end_date = date.today() + timedelta(days=1)
 
     history = ezpin.get_order_history(
         start_date=start_date, end_date=end_date, limit=limit, offset=offset
     )
+    copy = history["results"][::-1]
+    history["results"] = copy
 
-    background_tasks.add_task(refresh_local_orders, history["results"], db, ezpin)
+    background_tasks.add_task(refresh_local_orders, copy, db, ezpin)
 
     return history
 
