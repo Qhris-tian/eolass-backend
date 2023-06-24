@@ -16,7 +16,7 @@ def get_create_auction_plain(body: CreateAuctionRequest):
                     price: { amount: %s, currency: "%s" }
                     }
                 ) {
-                    isSuccessful
+                    success
                     actionId
                 }
                 }
@@ -46,7 +46,7 @@ def get_create_auction_preorder(body: CreateAuctionRequest):
                         price: { amount: %s, currency: "%s" }
                         }
                     ) {
-                        isSuccessful
+                        success
                         actionId
                     }
                 }
@@ -76,7 +76,7 @@ def get_create_auction_declared_stock(body: CreateAuctionRequest):
                     price: { amount: %s, currency: "%s" }
                     }
                 ) {
-                    isSuccessful
+                    success
                     actionId
                 }
                 }
@@ -105,7 +105,7 @@ def get_update_auction_plain(body: UpdateAuctionRequest):
                 autoRenew: %s
                 }
             ) {
-                isSuccessful
+                success
                 actionId
             }
             }
@@ -132,7 +132,7 @@ def get_update_auction_declared_stock(body: UpdateAuctionRequest):
                 autoRenew: %s
                 }
             ) {
-                isSuccessful
+                success
                 actionId
             }
             }
