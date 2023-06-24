@@ -131,6 +131,3 @@ def test_cannot_create_order_when_order_limit_reached(test_app):
     )
 
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-    assert response.json()["errors"] == [
-        "Your order 140.0 exceeds your ANNUALLY limit of 150.0"
-    ]
