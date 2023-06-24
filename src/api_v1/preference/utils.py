@@ -1,13 +1,10 @@
 from datetime import date
 
+from .crud import get_preference, get_sum_of_orders
 from .schema import IntervalEnum
-from .crud import (
-    get_preference,
-    get_sum_of_orders,
-)
 
 
-async def get_order_limit(db, added: float = 0.0): # pragma: no cover
+async def get_order_limit(db, added: float = 0.0):  # pragma: no cover
     preference = await get_preference(db)
 
     if preference:
@@ -30,7 +27,7 @@ async def get_order_limit(db, added: float = 0.0): # pragma: no cover
                         date.today().strftime("%Y-01-01"), db
                     )
 
-            if limit["value"] < constraint + added:                
+            if limit["value"] < constraint + added:
                 return True, limit
 
     return False, {}

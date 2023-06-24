@@ -14,7 +14,7 @@ def get_month_date(date: datetime, delta: int) -> datetime:
 
 
 async def refresh_local_orders(order_list: List, db, ezpin) -> None:
-    reference_list = [ order["reference_code"] for order in order_list]
+    reference_list = [order["reference_code"] for order in order_list]
 
     found_orders = await find_pending_orders_in(
         key="reference_code", values=reference_list, db=db

@@ -7,9 +7,9 @@ from src.api_v1.card.controller import router as card_router
 from src.api_v1.catalog.controller import router as catalog_router
 from src.api_v1.inventory.controller import router as inventory_router
 from src.api_v1.orders.controller import router as order_router
+from src.api_v1.preference.controller import router as preference_router
 from src.api_v1.product.controller import router as product_router
 from src.api_v1.transaction.controller import router as transaction_router
-from src.api_v1.preference.controller import router as preference_router
 from src.config import get_settings
 
 settings = get_settings()

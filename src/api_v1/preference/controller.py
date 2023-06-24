@@ -2,9 +2,8 @@ from fastapi import APIRouter, Body, Depends, status
 
 from src.database import get_database
 
-from .crud import create_new_preference, update_preference, get_preference
+from .crud import create_new_preference, get_preference, update_preference
 from .schema import Preference
-
 
 router = APIRouter()
 
@@ -33,4 +32,3 @@ async def update_account_preference(
 ):
     result = await update_preference(id, request.dict(), db)
     return result
-

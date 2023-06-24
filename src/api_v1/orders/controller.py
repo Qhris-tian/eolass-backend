@@ -27,13 +27,14 @@ async def create_order(
 ):
     """Create order for a product."""
     if request.price > 0 and request.quantity > 0:
-        limit_reached, limit = await get_order_limit(
-            db, (request.price * request.quantity)
-        )
+        value = request.price * request.quantity
+        limit_reached, limit = await get_order_limit(db, (value))
         if limit_reached:
+            difference = limit["value"] - value
+
             raise HTTPException(  # pragma: no cover
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=f"Your order {(request.price * request.quantity)} exceeds your {limit['interval']} limit of {limit['value']}",
+                detail=f"Order exceeds your {limit['interval']} limit of {difference}",
             )
 
         created_order = await create_new_order(request.dict(), db=db)
