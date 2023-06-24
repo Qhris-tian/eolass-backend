@@ -32,7 +32,8 @@ async def synchronize_order(order, db, ezpin) -> Dict:
 
     if order_ezpin["is_completed"] and order_ezpin["status"] == 1:
         cards = ezpin.get_order_cards(order["reference_code"])
-        await create_order_inventory(order_ezpin, cards["results"], db)
+
+        await create_order_inventory(order_ezpin, cards, db)
 
         await mark_order_as_complete(order["reference_code"], db)
 
