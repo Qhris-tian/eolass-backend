@@ -61,7 +61,7 @@ class EnebaClient:
         return {
             "data": {
                 "S_createAuction": {
-                    "isSuccessful": "true",
+                    "success": "true",
                     "actionId": "d30285ba-b129-11ea-9077-0242ac12000b",
                 }
             }
@@ -73,7 +73,7 @@ class EnebaClient:
         return {
             "data": {
                 "S_updateAuction": {
-                    "isSuccessful": "true",
+                    "success": "true",
                     "actionId": "2f6ea78e-507e-11ed-bdc3-0242ac120002",
                 }
             }
