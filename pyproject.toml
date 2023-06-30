@@ -14,9 +14,8 @@ snakecase = "^1.0.1"
 motor = "^3.1.2"
 motor-types = "^1.0.0b1"
 ratelimit = "^2.2.1"
-requests = "^2.30.0"
-urllib3 = "1.26.15"
-types-requests = "^2.30.0.0"
+requests = "^2.31.0"
+types-requests = "^2.31.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -24,6 +24,7 @@ class UpdateInventoryInDB(BaseInventory, RWModel):
     created_at: datetime | None = Field(
         exclude=True,
     )
+    updated_at = datetime.now()
 
 
 class Card(BaseModel):
