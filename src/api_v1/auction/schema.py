@@ -4,6 +4,7 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
+from src.api_v1.schema import ModelMixin
 
 class Price(BaseModel):
     amount: int
@@ -39,3 +40,7 @@ class CountFeeTypeEnum(Enum):
     auction_renew = "AUCTION_RENEW"
     wallet_withdraw = "WALLET_WITHDRAW"
     auction_price_update = "AUCTION_PRICE_UPDATE"
+
+
+class CreateAuctionInDB(ModelMixin):
+    auction_id: UUID
