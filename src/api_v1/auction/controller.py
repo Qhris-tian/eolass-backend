@@ -23,6 +23,7 @@ def get_auctions(page: str = "", limit: int = 10, eneba=Depends(EnebaClient)):
 async def create_auction(
     auction_data: CreateAuctionRequest,
     type: str,
+    inventory_id: str,
     eneba=Depends(EnebaClient),
     db=Depends(get_database),
 ):
@@ -35,7 +36,8 @@ async def create_auction(
     if "errors" not in response:
         created_auction = await create_auction_details({
             "auction_id": response["data"]["S_createAuction"]["actionId"],
-            "created_at": str(datetime.now())
+            "created_at": str(datetime.now()),
+            "inventory_id": inventory_id
             }, db=db)
 
     return {"response": response}
