@@ -1,5 +1,4 @@
 from uuid import UUID
-
 from fastapi import APIRouter, Depends
 
 from src.api_v1.card.crud import mark_cards_as_unavialable
@@ -7,6 +6,7 @@ from src.database import get_database
 from src.plugins.eneba import EnebaClient
 
 from .schema import CreateAuctionRequest, UpdateAuctionRequest
+from .crud import create_auction_details
 
 router = APIRouter()
 
@@ -29,7 +29,14 @@ async def create_auction(
     auction_data.autoRenew = "true" if auction_data.autoRenew is True else "false"
     response = eneba.create_auction(auction_data, type)
 
-    await mark_cards_as_unavialable(cards=auction_data.keys, db=db)
+    if "errors" not in response:  # pragma: no cover
+        await mark_cards_as_unavialable(cards=auction_data.keys, db=db)
+        await create_auction_details(
+            {
+                "auction_id": response["data"]["S_createAuction"]["actionId"],
+            },
+            db=db,
+        )
 
     return {"response": response}
 
