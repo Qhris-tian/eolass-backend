@@ -20,7 +20,8 @@ def test_create_auction(test_app):
     }
 
     inventory_id = "562"
-    response = test_app.post("/api/v1/auctions?type=plain&inventory_id={}".format(inventory_id), json=create_data)
+    response = test_app.post("/api/v1/auctions?type=plain&inventory_id={}".format(inventory_id), 
+                             json=create_data)
 
     assert response.status_code == status.HTTP_200_OK
     assert "response" in response.json()
