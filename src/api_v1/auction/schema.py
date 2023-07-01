@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 from src.api_v1.schema import ModelMixin
 
+
 class Price(BaseModel):
     amount: int
     currency: str

@@ -1,12 +1,13 @@
 from uuid import UUID
+
 from fastapi import APIRouter, Depends
 
 from src.api_v1.card.crud import mark_cards_as_unavialable
 from src.database import get_database
 from src.plugins.eneba import EnebaClient
 
-from .schema import CreateAuctionRequest, UpdateAuctionRequest
 from .crud import create_auction_details
+from .schema import CreateAuctionRequest, UpdateAuctionRequest
 
 router = APIRouter()
 
@@ -22,6 +23,7 @@ def get_auctions(page: str = "", limit: int = 10, eneba=Depends(EnebaClient)):
 async def create_auction(
     auction_data: CreateAuctionRequest,
     type: str,
+    inventory_id: str,
     eneba=Depends(EnebaClient),
     db=Depends(get_database),
 ):
@@ -34,6 +36,7 @@ async def create_auction(
         await create_auction_details(
             {
                 "auction_id": response["data"]["S_createAuction"]["actionId"],
+                "inventory_id": inventory_id,
             },
             db=db,
         )
