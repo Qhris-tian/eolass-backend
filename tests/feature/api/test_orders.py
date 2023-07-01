@@ -6,6 +6,7 @@ from uuid import uuid4
 from fastapi import status
 
 base_endpoint = "/api/v1/orders"
+preference_endpoint = "/api/v1/preferences"
 
 
 def test_cannot_create_order_when_price_or_quantity_is_less_than_zero(test_app):
@@ -112,3 +113,21 @@ def test_cannot_refresh_existing_completed_order(test_app):
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"message": "Order has already been completed."}
+
+
+def test_cannot_create_order_when_order_limit_reached(test_app):
+    response = test_app.post(
+        preference_endpoint,
+        json={
+            "spending_limits": [{"interval": "ANNUAL", "value": 150.0}],
+            "auction_percentage_selling_price": 0.02,
+        },
+    )
+    assert response.status_code == status.HTTP_201_CREATED
+
+    response = test_app.post(
+        base_endpoint,
+        json={"product_id": 10, "quantity": 14, "price": 10, "pre_order": False},
+    )
+
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY

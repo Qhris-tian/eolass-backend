@@ -4,6 +4,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
 
+from src.api_v1.preference.utils import get_order_limit
 from src.database import get_database
 from src.plugins.ezpin import Ezpin
 
@@ -26,6 +27,16 @@ async def create_order(
 ):
     """Create order for a product."""
     if request.price > 0 and request.quantity > 0:
+        value = request.price * request.quantity
+        limit_reached, limit = await get_order_limit(db, (value))
+        if limit_reached:
+            difference = limit["value"] - value
+
+            raise HTTPException(  # pragma: no cover
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Order exceeds your {limit['interval']} limit of {difference}",
+            )
+
         created_order = await create_new_order(request.dict(), db=db)
 
         status_code, response_json = ezpin.create_order(created_order)
@@ -33,7 +44,7 @@ async def create_order(
         if status_code == status.HTTP_200_OK or status_code == status.HTTP_201_CREATED:
             return response_json
 
-        raise HTTPException(  # pragma: nocover
+        raise HTTPException(  # pragma: no cover
             status_code=status_code,
             detail=response_json,
         )
@@ -55,15 +66,17 @@ def get_order_history(
 ):
     """Get order history."""
     if start_date is None:
-        start_date = date.today() - timedelta(days=5)
+        start_date = date.today() - timedelta(days=1)
     if end_date is None:
-        end_date = date.today()
+        end_date = date.today() + timedelta(days=1)
 
     history = ezpin.get_order_history(
         start_date=start_date, end_date=end_date, limit=limit, offset=offset
     )
+    copy = history["results"][::-1]
+    history["results"] = copy
 
-    background_tasks.add_task(refresh_local_orders, history["results"], db, ezpin)
+    background_tasks.add_task(refresh_local_orders, copy, db, ezpin)
 
     return history
 
