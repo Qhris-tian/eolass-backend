@@ -5,6 +5,7 @@ from src.api_v1.account.controller import router as account_router
 from src.api_v1.auction.controller import router as auction_router
 from src.api_v1.card.controller import router as card_router
 from src.api_v1.catalog.controller import router as catalog_router
+from src.api_v1.dropshipping.controller import router as dropship_router
 from src.api_v1.inventory.controller import router as inventory_router
 from src.api_v1.orders.controller import router as order_router
 from src.api_v1.preference.controller import router as preference_router
@@ -73,6 +74,13 @@ api_router.include_router(
     preference_router,
     prefix="/preferences",
     tags=["Preferences"],
+)
+
+
+api_router.include_router(
+    dropship_router,
+    prefix="/dropship",
+    tags=["Dropship"],
 )
 
 

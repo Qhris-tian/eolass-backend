@@ -45,3 +45,4 @@ class CountFeeTypeEnum(Enum):
 
 class CreateAuctionInDB(ModelMixin):
     auction_id: UUID
+    inventory_id: int

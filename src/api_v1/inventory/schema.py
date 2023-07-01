@@ -42,6 +42,7 @@ class CreateCardInDB(ModelMixin):
     expire_date: Optional[datetime | str]
     product: int
     available: bool = True
+    order_id: Optional[str]
 
 
 class CreateInventoryCardRequest(BaseModel):

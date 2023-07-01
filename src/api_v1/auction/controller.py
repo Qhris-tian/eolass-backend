@@ -23,7 +23,7 @@ def get_auctions(page: str = "", limit: int = 10, eneba=Depends(EnebaClient)):
 async def create_auction(
     auction_data: CreateAuctionRequest,
     type: str,
-    inventory_id: str,
+    inventory_id: int,
     eneba=Depends(EnebaClient),
     db=Depends(get_database),
 ):

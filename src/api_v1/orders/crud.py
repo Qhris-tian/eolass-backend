@@ -9,6 +9,7 @@ from .schema import CreateOrderInDB, StatusEnum
 
 
 async def create_new_order(order_request: Dict, db):
+    print(order_request)
     order = CreateOrderInDB(**order_request)
 
     result = await db["orders"].insert_one(jsonable_encoder(order))
@@ -48,7 +49,10 @@ async def create_order_inventory(order: Dict, cards, db):
         )
 
     cards_to_insert = [
-        CreateCardInDB(**card, product=found_inventory["sku"]) for card in cards
+        CreateCardInDB(
+            **card, product=found_inventory["sku"], order_id=order["reference_code"]
+        )
+        for card in cards
     ]
 
     await db["cards"].insert_many(jsonable_encoder(cards_to_insert))

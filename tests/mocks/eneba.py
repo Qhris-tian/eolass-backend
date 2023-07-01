@@ -1,3 +1,5 @@
+from uuid import uuid1
+
 from tests.mocks.schema import CreateAuctionMock
 
 
@@ -62,7 +64,7 @@ class EnebaClient:
             "data": {
                 "S_createAuction": {
                     "success": "true",
-                    "actionId": "d30285ba-b129-11ea-9077-0242ac12000b",
+                    "actionId": str(uuid1()),
                 }
             }
         }

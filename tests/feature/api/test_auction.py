@@ -19,9 +19,8 @@ def test_create_auction(test_app):
         "declaredStock": 0,
     }
 
-    inventory_id = "562"
     response = test_app.post(
-        "/api/v1/auctions?type=plain&inventory_id={}".format(inventory_id),
+        "/api/v1/auctions?type=plain&inventory_id=562",
         json=create_data,
     )
 

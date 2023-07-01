@@ -54,3 +54,4 @@ class CreateOrderRequest(BaseModel):
 class CreateOrderInDB(CreateOrderRequest, ModelMixin):
     reference_code: UUID = Field(default_factory=uuid4)
     status: StatusEnum = Field(default=StatusEnum.pending.value)
+    auction_id: Optional[str]

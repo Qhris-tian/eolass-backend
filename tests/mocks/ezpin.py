@@ -4,6 +4,9 @@ from datetime import datetime
 from typing import Dict
 from uuid import uuid4
 
+from fastapi import status
+from starlette.responses import JSONResponse
+
 
 class Ezpin:
     """Mock http client to fake ezpin calls"""
@@ -60,15 +63,19 @@ class Ezpin:
             ],
         }
 
-    def catalog_availability(self, product_id: str, data: Dict):
-        available = True if random.randint(0, 1) else False
+    def catalog_availability(self, product_id: str, data: Dict, available: bool = True):
         detail = (
             "This catalog is available."
             if available
             else "This catalog is not available."
         )
 
-        return {"availability": available, "detail": detail}
+        return JSONResponse(
+            status_code=status.HTTP_200_OK
+            if available
+            else status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content={"availability": available, "detail": detail},
+        )
 
 
 dummy_product_names = [
