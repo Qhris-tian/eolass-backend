@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 import requests
+from pydantic import AnyHttpUrl
 from ratelimit import limits  # type: ignore
 
 from src.api_v1.auction import utils
@@ -206,6 +207,28 @@ class EnebaClient(BaseClient):
         data = dict(remove_edges_and_nodes(response.json()["data"]))
 
         return data["S_product"]
+
+    def register_callback_url(
+        self, type: str, url: AnyHttpUrl, authorization: str = "None"
+    ):
+        function_limit()
+        return self.post_json(
+            "graphql/",
+            {
+                "query": """mutation {
+                                P_registerCallback(
+                                    input: {
+                                    type: %s
+                                    url: %s
+                                    authorization: %s
+                                    }
+                                ) {
+                                    success
+                            }
+                        }"""
+                % (type, url, authorization)
+            },
+        )
 
 
 @timed_lru_cache(210000)

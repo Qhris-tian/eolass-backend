@@ -35,7 +35,7 @@ class ReserveRequest(BaseModel):
 
 
 class ProvisionRequest(BaseModel):
-    action: ActionEnum = ActionEnum.reserve
+    action: ActionEnum = ActionEnum.provide
     orderId: str
     originalOrderId: Optional[str]
 
